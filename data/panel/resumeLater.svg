@@ -10,15 +10,15 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="327.95001"
-   height="327.95001"
+   width="322.4859"
+   height="321.95273"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="icon2.svg"
-   inkscape:export-filename="/home/martin/src/mozilla/resumeLaterIcon/rl64.png"
-   inkscape:export-xdpi="17.559999"
-   inkscape:export-ydpi="17.559999">
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="icon3.svg"
+   inkscape:export-filename="/home/martin/src/mozilla/resumeLaterIcon/rl16.png"
+   inkscape:export-xdpi="4.4727063"
+   inkscape:export-ydpi="4.4727063">
   <defs
      id="defs4">
     <linearGradient
@@ -243,21 +243,21 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994948"
-     inkscape:cx="144.62233"
-     inkscape:cy="89.229409"
+     inkscape:cx="-29.954816"
+     inkscape:cy="70.926386"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1440"
-     inkscape:window-height="830"
+     inkscape:window-width="1600"
+     inkscape:window-height="853"
      inkscape:window-x="0"
-     inkscape:window-y="23"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      showguides="true"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0">
+     fit-margin-top="11"
+     fit-margin-left="15"
+     fit-margin-right="15"
+     fit-margin-bottom="11">
     <inkscape:grid
        type="xygrid"
        id="grid4292"
@@ -284,11 +284,11 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-77.141504,-199.08508)">
+     transform="translate(-79.800154,-202.092)">
     <g
        inkscape:label="Layer 1"
        id="layer1-2"
-       transform="matrix(7.9999998,0,0,7.9999998,49.142853,167.14788)">
+       transform="matrix(7.3170731,0,0,7.3170731,65.533095,183.87959)">
       <path
          inkscape:r_cy="true"
          inkscape:r_cx="true"
@@ -308,7 +308,7 @@
     </g>
     <g
        id="g3097"
-       transform="matrix(4.0181361,0,0,4.0181361,150.58451,332.63586)">
+       transform="matrix(3.6751245,0,0,3.6751245,144.4563,336.16446)">
       <path
          style="opacity:0.3;fill:url(#radialGradient3225);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.99999988;marker:none;visibility:visible;display:inline;overflow:visible"
          id="path8836"
