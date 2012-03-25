@@ -7,6 +7,10 @@ body {
 	font-size: small;
 }
 
+.clickable{
+	cursor: default;
+}
+
 .clickable:hover{
 	background-color: lightgreen;
 }
