@@ -7,31 +7,32 @@ body {
 	font-size: small;
 }
 
-.clickable{
+.clickable {
 	cursor: default;
 }
 
-.clickable:hover{
-	background-color: lightgreen;
+.clickable:hover {
+	background-color: rgb(244, 244, 170);
 }
 
-.clickable:active{
-	background-color: green;
+.clickable:active {
+	background-color: rgb(244, 244, 110);
 }
 
 menu.videoList {
 	list-style-type: none;
 	margin-left: 0;
-	padding: 0;
+	padding: 0px;
 }
 
 .video {
-
+	clear: both;
 }
 
 .videoInfoCell {
+	float: left;
 	padding: 0.2em;
-	cursor: default;
+	width: 278px;
 }
 
 .videoTitle {
@@ -43,11 +44,14 @@ menu.videoList {
 }
 
 .removeButtonCell {
-	padding: 0.2em;
+	float: right;
 }
 
 .wrapper {
 	padding-bottom: 40px;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
 }
 
 #footer {
@@ -60,8 +64,6 @@ menu.videoList {
 	width: 300px;
 }
 
-#resumeLaterButton {
-	display:block;
-	margin-left: auto;
-	margin-right: auto;
+.footerButtons {
+	text-align: center;
 }

@@ -6,8 +6,6 @@ self.port.on('update', updateList);
 
 function updateList(videos) {
 
-	console.debug(JSON.stringify(videos));
-
 	function removeFactory(vid, title) {
 		return function() {
 			if (confirm('Remove "' + title + '"?')) {
@@ -35,23 +33,23 @@ function updateList(videos) {
 	const videoList = $(".videoList");
 	videoList.empty();
 	
-	for each (video in videos) {
-		var videoElement = $('<tr class="video"></tr>');
+	videos.forEach(function(video) {
+		var videoElement = $('<li class="video"></li>');
 		videoElement.attr('id', video.vid);
 		
-		var videoInfoCell = $('<td class="videoInfoCell, clickable">'
+		var videoInfoCell = $('<div class="clickable videoInfoCell">'
 			+ '<span class="videoTitle">' + video.title + '</span>'
-			+ '<span class="videoTime">' + prettyTime(video.time) + '</span></td>');
+			+ '<span class="videoTime">' + prettyTime(video.time) + '</span></div>');
 		videoInfoCell.click(playFactory(video.vid));
 		videoInfoCell.appendTo(videoElement);
 		
-		var removeButtonCell = $('<td class="removeButtonCell"></td>');
+		var removeButtonCell = $('<div class="removeButtonCell"></div>');
 		removeButtonCell.appendTo(videoElement);
 		
-		var removeButton = $('<button title="Remove this video"><img src="remove.svg" height="16" alt="Remove this video"/></button>');
+		var removeButton = $('<div><img class="clickable" src="remove.svg" width="16" alt="Remove this video"/></div>');
 		removeButton.click(removeFactory(video.vid, video.title));
 		removeButton.appendTo(removeButtonCell);
 		
 		videoList.append(videoElement);
-	}
+	});
 }
