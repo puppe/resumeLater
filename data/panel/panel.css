@@ -7,7 +7,7 @@ body {
 	font-size: small;
 }
 
-.clickable {
+.clickable, .clickableBad {
 	cursor: default;
 }
 
@@ -19,20 +19,34 @@ body {
 	background-color: rgb(244, 244, 110);
 }
 
+.clickableBad:hover {
+	background-color: rgb(255, 170, 170);
+}
+
+.clickableBad:active {
+	background-color: rgb(255, 110, 110);
+}
+
 menu.videoList {
 	list-style-type: none;
-	margin-left: 0;
-	padding: 0px;
+	padding: 0.2em;
 }
 
 .video {
+	border: 0.1em solid rgb(170, 170, 110);
+	border-collapse: collapse;
 	clear: both;
+	margin: 0.4em;
 }
 
-.videoInfoCell {
+
+.videoFloatContainer {
+	overflow: auto;
+}
+
+.videoInfoBox {
 	float: left;
-	padding: 0.2em;
-	width: 278px;
+	width: 94%;
 }
 
 .videoTitle {
@@ -43,15 +57,25 @@ menu.videoList {
 	font-size: x-small;
 }
 
-.removeButtonCell {
+.removeButtonBox {
 	float: right;
 }
 
+.confirmRemoveDialogBox {
+	margin:0.5em;
+	text-align: center;
+}
+
+.confirmRemoveDialog {
+	clear: both;
+	border: 0.2em dashed rgb(255, 170, 170);
+}
+
 .wrapper {
-	padding-bottom: 40px;
-	padding-top: 0px;
-	padding-right: 0px;
-	padding-left: 0px;
+	padding-bottom: 3em;
+	padding-top: 0;
+	padding-right: 0;
+	padding-left: 0;
 }
 
 #footer {

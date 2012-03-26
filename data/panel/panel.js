@@ -7,11 +7,39 @@ self.port.on('update', updateList);
 function updateList(videos) {
 
 	function removeFactory(vid, title) {
+
+		var removeButtonEnabled = true;
+
 		return function() {
-			if (confirm('Remove "' + title + '"?')) {
+			if (!removeButtonEnabled) {
+				return;
+			}
+			removeButtonEnabled = false;
+
+			var removeButtonBox = $(this);
+
+			var confirmRemoveDialogBox = $('<div class="confirmRemoveDialogBox"></div>');
+			confirmRemoveDialogBox.insertAfter(removeButtonBox.parent());
+
+			var confirmRemoveDialog = $('<span class="confirmRemoveDialog">Remove this video? </span>');
+			confirmRemoveDialog.appendTo(confirmRemoveDialogBox);
+
+			var confirmRemove = $('<span class="clickableBad">Confirm</span>');
+			var cancelRemove = $('<span class="clickable">Cancel</span>');
+
+			confirmRemove.click(function() {
 				console.info("Remove " + vid);
 				self.port.emit('remove', vid);
-			}
+				confirmRemoveDialogBox.remove();
+				removeButtonEnabled = true;
+			});
+
+			cancelRemove.click(function() {
+				confirmRemoveDialogBox.remove();
+				removeButtonEnabled = true;
+			});
+
+			confirmRemoveDialog.append(confirmRemove, '/', cancelRemove);
 		}
 	}
 	
@@ -36,20 +64,19 @@ function updateList(videos) {
 	videos.forEach(function(video) {
 		var videoElement = $('<li class="video"></li>');
 		videoElement.attr('id', video.vid);
+		videoElement.appendTo(videoList);
 		
-		var videoInfoCell = $('<div class="clickable videoInfoCell">'
+		var videoFloatContainer = $('<div class="videoFloatContainer clearfix"></div>');
+		videoFloatContainer.appendTo(videoElement);
+
+		var videoInfoBox = $('<div class="clickable videoInfoBox">'
 			+ '<span class="videoTitle">' + video.title + '</span>'
 			+ '<span class="videoTime">' + prettyTime(video.time) + '</span></div>');
-		videoInfoCell.click(playFactory(video.vid));
-		videoInfoCell.appendTo(videoElement);
+		videoInfoBox.click(playFactory(video.vid));
+		videoInfoBox.appendTo(videoFloatContainer);
 		
-		var removeButtonCell = $('<div class="removeButtonCell"></div>');
-		removeButtonCell.appendTo(videoElement);
-		
-		var removeButton = $('<div><img class="clickable" src="remove.svg" width="16" alt="Remove this video"/></div>');
-		removeButton.click(removeFactory(video.vid, video.title));
-		removeButton.appendTo(removeButtonCell);
-		
-		videoList.append(videoElement);
+		var removeButtonBox = $('<div class="clickable removeButtonBox"><img src="remove.svg" width="16" alt="Remove this video"/></div>');
+		removeButtonBox.click(removeFactory(video.vid, video.title));
+		removeButtonBox.appendTo(videoFloatContainer);
 	});
 }
