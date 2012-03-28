@@ -47,6 +47,7 @@ menu.videoList {
 
 .videoInfoBox {
 	float: left;
+	text-align: left;
 	width: 94%;
 }
 
