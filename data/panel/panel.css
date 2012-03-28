@@ -37,6 +37,7 @@ menu.videoList {
 	border-collapse: collapse;
 	clear: both;
 	margin: 0.4em;
+	text-align: center;
 }
 
 
@@ -61,14 +62,20 @@ menu.videoList {
 	float: right;
 }
 
-.confirmRemoveDialogBox {
-	margin:0.5em;
+.dialogBox {
+	border: 0.2em dashed rgb(255, 170, 170);
+	display: inline-block;
+	margin: 0.5em;
+	padding: 0 0.5em;
 	text-align: center;
 }
 
-.confirmRemoveDialog {
-	clear: both;
-	border: 0.2em dashed rgb(255, 170, 170);
+.dialogBox > p {
+	margin: 0.5em 0;
+}
+
+.dialogButton {
+	margin: 0 0.5em;
 }
 
 .wrapper {
@@ -82,6 +89,7 @@ footer {
 	background-color: white;
 	position: fixed;
 	bottom: 0px;
+	text-align: center;
 	width: 300px;
 }
 

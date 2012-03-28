@@ -3,6 +3,9 @@ $("#resumeLaterButton").click(function() {
 });
 
 self.port.on('update', updateList);
+self.port.on('not supported', function() {
+	showNotification('This site is not supported!');
+});
 
 function updateList(videos) {
 
@@ -18,28 +21,31 @@ function updateList(videos) {
 
 			var removeButtonBox = $(this);
 
-			var confirmRemoveDialogBox = $('<div class="confirmRemoveDialogBox"></div>');
-			confirmRemoveDialogBox.insertAfter(removeButtonBox.parent());
+			var dialogBox = $('<div class="dialogBox"></div>');
+			dialogBox.insertAfter(removeButtonBox.parent());
 
-			var confirmRemoveDialog = $('<span class="confirmRemoveDialog">Remove this video? </span>');
-			confirmRemoveDialog.appendTo(confirmRemoveDialogBox);
+			var dialogText = $('<p>Remove this video?</p>');
+			dialogText.appendTo(dialogBox);
 
-			var confirmRemove = $('<span class="clickableBad">Confirm</span>');
-			var cancelRemove = $('<span class="clickable">Cancel</span>');
+			var dialogButtons = $('<p></p>');
+			dialogButtons.appendTo(dialogBox);
 
-			confirmRemove.click(function() {
+			var confirm = $('<span class="clickableBad dialogButton">Confirm</span>');
+			var cancel = $('<span class="clickable dialogButton">Cancel</span>');
+
+			confirm.click(function() {
 				console.info("Remove " + vid);
 				self.port.emit('remove', vid);
-				confirmRemoveDialogBox.remove();
+				dialogBox.remove();
 				removeButtonEnabled = true;
 			});
 
-			cancelRemove.click(function() {
-				confirmRemoveDialogBox.remove();
+			cancel.click(function() {
+				dialogBox.remove();
 				removeButtonEnabled = true;
 			});
 
-			confirmRemoveDialog.append(confirmRemove, '/', cancelRemove);
+			dialogButtons.append(confirm, cancel);
 		}
 	}
 	
@@ -79,4 +85,24 @@ function updateList(videos) {
 		removeButtonBox.click(removeFactory(video.vid, video.title));
 		removeButtonBox.appendTo(videoFloatContainer);
 	});
+}
+
+function showNotification(text) {
+	console.log(text);
+
+	var dialogBox = $('<div class="dialogBox"></div>')
+	dialogBox.insertBefore($('.footerButtons'));
+
+	var dialogText = $('<p>Remove this video?</p>');
+	dialogText.appendTo(dialogBox);
+
+	var dialogButtons = $('<p></p>');
+	dialogButtons.appendTo(dialogBox);
+
+	var confirm = $('<span class="clickable confirmNotification">Okay</span>');
+	confirm.click(function()  {
+		dialogBox.remove();
+	});
+
+	confirm.appendTo(dialogButtons);
 }
