@@ -93,7 +93,7 @@ function showNotification(text) {
 	var dialogBox = $('<div class="dialogBox"></div>')
 	dialogBox.insertBefore($('.footerButtons'));
 
-	var dialogText = $('<p>Remove this video?</p>');
+	var dialogText = $('<p>' + text + '</p>');
 	dialogText.appendTo(dialogBox);
 
 	var dialogButtons = $('<p></p>');
