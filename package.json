@@ -1,9 +1,9 @@
 {
     "name": "resumelater",
-    "license": "GPL 2.0",
+    "license": "GPL 3",
     "author": "Martin Puppe",
     "version": "0.1",
     "fullName": "resumeLater",
     "id": "resumeLater@mpuppe.de",
-    "description": "resumeLater lets you bookmark videos on sites like Youtube. You can later resume playback at the time you stopped."
+    "description": "resumeLater lets you bookmark videos on sites like Youtube. It allows you to resume playback at the position you stopped."
 }
