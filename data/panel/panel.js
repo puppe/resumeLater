@@ -1,10 +1,28 @@
+var privateBrowsing = false;
+
 $("#resumeLaterButton").click(function() {
-	self.port.emit("save");
+	if (privateBrowsing) {
+		showNotification('Saving is disabled in private browsing mode.');
+	}
+	else {
+		self.port.emit("save");
+	}
 });
 
 self.port.on('update', updateList);
 self.port.on('not supported', function() {
 	showNotification('This site is not supported!');
+});
+
+// private browsing
+self.port.on('private browsing start', function() {
+	privateBrowsing = true;
+	$('#resumeLaterButton').attr('src', 'resumeLater-off.svg');
+});
+
+self.port.on('private browsing stop', function() {
+	privateBrowsing = false;
+	$('#resumeLaterButton').attr('src', 'resumeLater.svg');
 });
 
 function updateList(videos) {
