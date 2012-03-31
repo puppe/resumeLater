@@ -3,7 +3,7 @@ const defaultLocale = {
 	'Okay' : 'Okay',
 	'Cancel' : 'Cancel',
 	'private browsing' : 'Saving is disabled in private browsing mode.',
-	'not supported' : 'This site is not supported!'
+	'no video' : 'Cannot find video!'
 };
 
 if (locale == undefined) {

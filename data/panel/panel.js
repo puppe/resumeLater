@@ -10,8 +10,8 @@ $("#resumeLaterButton").click(function() {
 });
 
 self.port.on('update', updateList);
-self.port.on('not supported', function() {
-	showNotification(_('not supported'));
+self.port.on('no video', function() {
+	showNotification(_('no video'));
 });
 
 // private browsing

@@ -3,5 +3,5 @@ var locale = {
 	'Okay' : 'Okay',
 	'Cancel' : 'Abbrechen',
 	'private browsing' : 'Im privaten Modus können keine Videos gespeichert werden.',
-	'not supported' : 'Dieser Anbieter wird nicht unterstützt!'
+	'no video' : 'Kann kein Video finden!'
 };
