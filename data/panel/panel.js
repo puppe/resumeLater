@@ -2,7 +2,7 @@ var privateBrowsing = false;
 
 $("#resumeLaterButton").click(function() {
 	if (privateBrowsing) {
-		showNotification('Saving is disabled in private browsing mode.');
+		showNotification(_('private browsing'));
 	}
 	else {
 		self.port.emit("save");
@@ -11,7 +11,7 @@ $("#resumeLaterButton").click(function() {
 
 self.port.on('update', updateList);
 self.port.on('not supported', function() {
-	showNotification('This site is not supported!');
+	showNotification(_('not supported'));
 });
 
 // private browsing
@@ -42,14 +42,14 @@ function updateList(videos) {
 			var dialogBox = $('<div class="dialogBox"></div>');
 			dialogBox.insertAfter(removeButtonBox.parent());
 
-			var dialogText = $('<p>Remove this video?</p>');
+			var dialogText = $('<p>' + _('remove?') + '</p>');
 			dialogText.appendTo(dialogBox);
 
 			var dialogButtons = $('<p></p>');
 			dialogButtons.appendTo(dialogBox);
 
-			var confirm = $('<span class="clickableBad dialogButton">Confirm</span>');
-			var cancel = $('<span class="clickable dialogButton">Cancel</span>');
+			var confirm = $('<span class="clickableBad dialogButton">' + _('Okay') + '</span>');
+			var cancel = $('<span class="clickable dialogButton">' + _('Cancel') + '</span>');
 
 			confirm.click(function() {
 				console.info("Remove " + vid);
@@ -117,7 +117,7 @@ function showNotification(text) {
 	var dialogButtons = $('<p></p>');
 	dialogButtons.appendTo(dialogBox);
 
-	var confirm = $('<span class="clickable confirmNotification">Okay</span>');
+	var confirm = $('<span class="clickable confirmNotification">' + _('Okay') + '</span>');
 	confirm.click(function()  {
 		dialogBox.remove();
 	});
