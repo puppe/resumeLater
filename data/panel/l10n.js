@@ -6,7 +6,9 @@ const defaultLocale = {
 	'not supported' : 'This site is not supported!'
 };
 
-var locale;
+if (locale == undefined) {
+	var locale = {};
+}
 
 function _(id) {
 	return locale[id] || defaultLocale[id];
