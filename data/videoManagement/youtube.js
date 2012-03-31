@@ -1,6 +1,6 @@
 var playerId;
 
-if (unsafeWindow.document.getElementById("movie_player") == null) {
+if (document.getElementById("movie_player") == null) {
 	playerId = 'movie_player-html5';
 } else {
 	playerId = 'movie_player';
