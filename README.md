@@ -6,6 +6,7 @@ Download: [add-ons.mozilla.org](https://addons.mozilla.org/en-US/firefox/addon/r
 
 ## Supported Sites
  * Youtube
+ * Vimeo
 
 ## Icons
 resumeLater uses [elementary Icons](https://launchpad.net/elementaryicons).
