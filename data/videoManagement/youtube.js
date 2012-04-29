@@ -11,4 +11,6 @@ var player = XPCNativeWrapper.unwrap(unsafeWindow.document.getElementById(player
 var time = player.getCurrentTime();
 player.pauseVideo();
 
-self.port.emit("time", time);
+// make sure not an unsafe object
+time= String(time);
+if (typeof time == "string") self.port.emit("time", time);

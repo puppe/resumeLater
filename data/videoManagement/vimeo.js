@@ -1,7 +1,12 @@
 self.port.on('time', function() {
 	var player = XPCNativeWrapper.unwrap(unsafeWindow.playerElement.children[1]);
 	player.api_pause();
-	self.port.emit('time', player.api_getCurrentTime());
+
+	var time = player.api_getCurrentTime();
+
+	// make sure not an unsafe object
+	time= String(time);
+	if (typeof time == "string") self.port.emit("time", time);
 });
 
 self.port.on('play', function(time) {
