@@ -6,7 +6,7 @@ if (document.getElementById("movie_player") == null) {
 	playerId = 'movie_player';
 }
 
-var player = XPCNativeWrapper.unwrap(unsafeWindow.document.getElementById(playerId));
+var player = document.getElementById(playerId).wrappedJSObject;
 
 var time = player.getCurrentTime();
 player.pauseVideo();
