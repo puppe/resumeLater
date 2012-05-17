@@ -2,8 +2,8 @@
     "name": "resumelater",
     "license": "GPL 3",
     "author": "Martin Puppe",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "fullName": "resumeLater",
     "id": "resumeLater@mpuppe.de",
-    "description": "resumeLater lets you bookmark videos on sites like Youtube. It allows you to resume playback at the position you stopped."
+    "description": "resumeLater is an extension for Mozilla Firefox. It lets you bookmark videos on Youtube and saves your current position. It allows you to resume playback at that position."
 }
