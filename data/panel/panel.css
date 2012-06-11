@@ -8,7 +8,7 @@ body {
 }
 
 .clickable, .clickableBad {
-	cursor: default;
+	cursor: pointer;
 }
 
 .clickable:hover {
