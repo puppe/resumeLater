@@ -13,3 +13,4 @@ if (locale == undefined) {
 function _(id) {
 	return locale[id] || defaultLocale[id];
 }
+// vim: set noet ts=2 sw=2 sts=0

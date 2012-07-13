@@ -124,3 +124,4 @@ function showNotification(text) {
 
 	confirm.appendTo(dialogButtons);
 }
+// vim: set noet ts=2 sw=2 sts=0
