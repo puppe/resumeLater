@@ -24,7 +24,7 @@
 				removeButtonBox.parentNode.parentNode.appendChild(dialogBox);
 
 				var dialogText = document.createElement('p');
-				dialogText.innerHTML = _('remove?');
+				dialogText.textContent = _('remove?');
 				dialogBox.appendChild(dialogText);
 
 				var dialogButtons = document.createElement('p');
@@ -32,7 +32,7 @@
 
 				var confirmButton = document.createElement('span');
 				confirmButton.className = 'clickableBad dialogButton';
-				confirmButton.innerHTML = _('Okay');
+				confirmButton.textContent = _('Okay');
 
 				confirmButton.addEventListener('click', function () {
 					console.info("Remove " + vid);
@@ -45,7 +45,7 @@
 
 				var cancelButton = document.createElement('span');
 				cancelButton.className = 'clickable dialogButton';
-				cancelButton.innerHTML = _('Cancel');
+				cancelButton.textContent = _('Cancel');
 
 				cancelButton.addEventListener('click', function () {
 					dialogBox.parentNode.removeChild(dialogBox);
@@ -89,9 +89,10 @@
 
 			var videoInfoBox = document.createElement('div');
 			videoInfoBox.className = 'clickable videoInfoBox';
-			videoInfoBox.innerHTML = '' +
-				'<span class="videoTitle">' + video.title + '</span>' +
-				'<span class="videoTime">' + prettyTime(video.time) + '</span>';
+			videoInfoBox.innerHTML = '<span class="videoTitle"></span>' +
+				'<span class="videoTime"></span>';
+			videoInfoBox.firstChild.textContent = video.title;
+			videoInfoBox.lastChild.textContent = prettyTime(video.time);
 			videoInfoBox.addEventListener('click', playFactory(video.vid));
 			videoFloatContainer.appendChild(videoInfoBox);
 
@@ -112,7 +113,7 @@
 		footerButtons.parentNode.insertBefore(dialogBox, footerButtons);
 
 		var dialogText = document.createElement('p');
-		dialogText.innerHTML = text;
+		dialogText.textContent = text;
 		dialogBox.appendChild(dialogText);
 
 		var dialogButtons = document.createElement('p');
@@ -120,7 +121,7 @@
 
 		var confirmButton = document.createElement('span');
 		confirmButton.className = 'clickable confirmNotification';
-		confirmButton.innerHTML = _('Okay');
+		confirmButton.textContent = _('Okay');
 		confirmButton.addEventListener('click', function ()  {
 			dialogBox.parentNode.removeChild(dialogBox);
 		});
