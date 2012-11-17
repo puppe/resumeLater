@@ -1,3 +1,6 @@
+/*jshint browser:true*/
+/*global self*/
+
 var playerId;
 
 if (document.getElementById("movie_player") == null) {
@@ -12,6 +15,8 @@ var time = player.getCurrentTime();
 player.pauseVideo();
 
 // make sure not an unsafe object
-time= String(time);
-if (typeof time == "string") self.port.emit("time", time);
+time = String(time);
+if (typeof time === "string") {
+	self.port.emit("time", time);
+}
 // vim: set noet ts=2 sw=2 sts=0

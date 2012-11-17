@@ -1,31 +1,9 @@
+/*jshint browser:true,esnext:true*/
+/*global self, console, l10n*/
 (function (_) {
+	'use strict';
 	var privateBrowsing = false;
 	var rlbutton = document.getElementById('resumeLaterButton');
-
-	rlbutton.addEventListener('click', function() {
-		if (privateBrowsing) {
-			showNotification(_('private browsing'));
-		}
-		else {
-			self.port.emit("save");
-		}
-	});
-
-	self.port.on('update', updateList);
-	self.port.on('no video', function() {
-		showNotification(_('no video'));
-	});
-
-	// private browsing
-	self.port.on('private browsing start', function() {
-		privateBrowsing = true;
-		rlbutton.setAttribute('src', 'resumeLater-off.svg');
-	});
-
-	self.port.on('private browsing stop', function() {
-		privateBrowsing = false;
-		rlbutton.setAttribute('src', 'resumeLater.svg');
-	});
 
 	function updateList(videos) {
 
@@ -33,7 +11,7 @@
 
 			var removeButtonEnabled = true;
 
-			return function(event) {
+			return function (event) {
 				if (!removeButtonEnabled) {
 					return;
 				}
@@ -56,7 +34,7 @@
 				confirmButton.className = 'clickableBad dialogButton';
 				confirmButton.innerHTML = _('Okay');
 
-				confirmButton.addEventListener('click', function() {
+				confirmButton.addEventListener('click', function () {
 					console.info("Remove " + vid);
 					self.port.emit('remove', vid);
 					dialogBox.parentNode.removeChild(dialogBox);
@@ -69,27 +47,28 @@
 				cancelButton.className = 'clickable dialogButton';
 				cancelButton.innerHTML = _('Cancel');
 
-				cancelButton.addEventListener('click', function() {
+				cancelButton.addEventListener('click', function () {
 					dialogBox.parentNode.removeChild(dialogBox);
 					removeButtonEnabled = true;
 				});
 
 				dialogButtons.appendChild(cancelButton);
-			}
+			};
 		}
 
 		function playFactory(vid) {
-			return function() {
+			return function () {
 				console.info('Play ' + vid);
 				self.port.emit('play', vid);
-			}
+			};
 		}
 
 		function prettyTime(time) {
-			minutes = Math.floor(time / 60).toString();
-			seconds = Math.floor(time % 60).toString();
-			if (seconds.length < 2)
+			var minutes = Math.floor(time / 60).toString();
+			var seconds = Math.floor(time % 60).toString();
+			if (seconds.length < 2) {
 				seconds = "0" + seconds;
+			}
 			return minutes + ":" + seconds;
 		}
 
@@ -98,7 +77,7 @@
 			videoList.removeChild(videoList.firstChild);
 		}
 
-		videos.forEach(function(video) {
+		videos.forEach(function (video) {
 			var videoElement = document.createElement('li');
 			videoElement.className = 'video';
 			videoElement.setAttribute('id', video.vid);
@@ -145,7 +124,34 @@
 		confirmButton.addEventListener('click', function ()  {
 			dialogBox.parentNode.removeChild(dialogBox);
 		});
+
 		dialogButtons.appendChild(confirmButton);
 	}
+
+	rlbutton.addEventListener('click', function () {
+		if (privateBrowsing) {
+			showNotification(_('private browsing'));
+		}
+		else {
+			self.port.emit("save");
+		}
+	});
+
+	self.port.on('update', updateList);
+	self.port.on('no video', function () {
+		showNotification(_('no video'));
+	});
+
+	// private browsing
+	self.port.on('private browsing start', function () {
+		privateBrowsing = true;
+		rlbutton.setAttribute('src', 'resumeLater-off.svg');
+	});
+
+	self.port.on('private browsing stop', function () {
+		privateBrowsing = false;
+		rlbutton.setAttribute('src', 'resumeLater.svg');
+	});
+
 }) (l10n);
 // vim: set noet ts=2 sw=2 sts=0

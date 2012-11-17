@@ -1,4 +1,9 @@
+/*jshint esnext:true*/
+/*global locale:true*/
+
 var l10n = (function (locale) {
+	'use strict';
+
 	const defaultLocale = {
 		'remove?' : 'Remove this video?',
 		'Okay' : 'Okay',
@@ -7,9 +12,7 @@ var l10n = (function (locale) {
 		'no video' : 'Cannot find video!'
 	};
 
-	if (locale == undefined) {
-		var locale = {};
-	}
+	locale = locale || {};
 
 	function _(id) {
 		return locale[id] || defaultLocale[id];
