@@ -1,5 +1,5 @@
 /*
-Copyright © 2012 Martin Puppe
+Copyright © 2013 Martin Puppe
 
 This file is part of resumeLater.
 
@@ -17,16 +17,10 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*jshint esnext:true*/
-/*global locale:true*/
-
-var l10n = (function (locale) {
-	'use strict';
-
-	function get(id) {
-		return locale[id];
-	}
-
-	return get;
-}) (locale);
-	// vim: set noet ts=2 sw=2 sts=0
+var locale = {
+	'remove?' : 'Remove this video?',
+	'Okay' : 'Okay',
+	'Cancel' : 'Cancel',
+	'private browsing' : 'Saving is disabled in private browsing mode.',
+	'no video' : 'Cannot find video!'
+};
