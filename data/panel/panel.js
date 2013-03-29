@@ -21,7 +21,6 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 /*global self, console, l10n*/
 (function (_) {
 	'use strict';
-	var privateBrowsing = false;
 	var rlbutton = document.getElementById('resumeLaterButton');
 
 	function updateList(videos) {
@@ -149,28 +148,12 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 	}
 
 	rlbutton.addEventListener('click', function () {
-		if (privateBrowsing) {
-			showNotification(_('private browsing'));
-		}
-		else {
-			self.port.emit("save");
-		}
+		self.port.emit("save");
 	});
 
 	self.port.on('update', updateList);
 	self.port.on('no video', function () {
 		showNotification(_('no video'));
-	});
-
-	// private browsing
-	self.port.on('private browsing start', function () {
-		privateBrowsing = true;
-		rlbutton.setAttribute('src', 'resumeLater-off.svg');
-	});
-
-	self.port.on('private browsing stop', function () {
-		privateBrowsing = false;
-		rlbutton.setAttribute('src', 'resumeLater.svg');
 	});
 
 }) (l10n);
