@@ -11,5 +11,12 @@
         "title": "Height of the video list",
         "type": "integer",
         "value": 500
+    },
+    {
+        "name": "oneVideoPerPlaylist",
+        "title": "One video per playlist",
+        "description": "Only keep one video per (Youtube) playlist",
+        "type": "bool",
+        "value": false
     }]
 }

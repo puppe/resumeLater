@@ -130,11 +130,13 @@ exports['test VideoStorage.add'] = function (assert) {
 };
 
 exports['test VideoStorage.add, oneVideoPerPlaylist = true'] = function (assert) {
-    var prefService = {
-        get: function () { return true; }
+    var simplePrefs = {
+        prefs: {
+            oneVideoPerPlaylist: true
+        }
     };
     var storage = { videos: {} };
-    var videoStorage = new VideoStorage(storage, prefService);
+    var videoStorage = new VideoStorage(storage, simplePrefs);
 
     videoStorage.add(video4);
     videoStorage.add(video5);
