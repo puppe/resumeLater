@@ -25,6 +25,10 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 
 	function updateList(videos) {
 
+		videos.sort(function (video1, video2) {
+			return video2.lastModified - video1.lastModified;
+		});
+
 		function removeFactory(vid, title) {
 
 			var removeButtonEnabled = true;
