@@ -25,14 +25,11 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 
 	function updateList(videos) {
 
-		videos.sort(function (video1, video2) {
-			return video2.lastModified - video1.lastModified;
-		});
-
-		function removeFactory(vid, title) {
+		function remove(vid, title) {
 
 			var removeButtonEnabled = true;
 
+			// Ask the user whether he wants to remove the video with id vid
 			return function (event) {
 				if (!removeButtonEnabled) {
 					return;
@@ -78,13 +75,6 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 			};
 		}
 
-		function playFactory(vid) {
-			return function () {
-				console.info('Play ' + vid);
-				self.port.emit('play', vid);
-			};
-		}
-
 		function prettyTime(time) {
 			var minutes = Math.floor(time / 60).toString();
 			var seconds = Math.floor(time % 60).toString();
@@ -94,11 +84,18 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 			return minutes + ":" + seconds;
 		}
 
+		// put newest video on top
+		videos.sort(function (video1, video2) {
+			return video2.lastModified - video1.lastModified;
+		});
+
+		// empty video list
 		const videoList = document.getElementById('videoList');
-		while (videoList.firstChild) {
-			videoList.removeChild(videoList.firstChild);
+		while (videoList.lastChild) {
+			videoList.removeChild(videoList.lastChild);
 		}
 
+		// populate video list
 		videos.forEach(function (video) {
 			var videoElement = document.createElement('li');
 			videoElement.className = 'video';
@@ -115,13 +112,16 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 				'<span class="videoTime"></span>';
 			videoInfoBox.firstChild.textContent = video.title;
 			videoInfoBox.lastChild.textContent = prettyTime(video.time);
-			videoInfoBox.addEventListener('click', playFactory(video.vid));
+			videoInfoBox.addEventListener('click', function () {
+				console.info('Play ' + video.vid);
+				self.port.emit('play', video.vid);
+			});
 			videoFloatContainer.appendChild(videoInfoBox);
 
 			var removeButtonBox = document.createElement('div');
 			removeButtonBox.className = 'clickable removeButtonBox';
 			removeButtonBox.innerHTML = '<img src="remove.svg" width="16" alt="Remove this video"/>';
-			removeButtonBox.addEventListener('click', removeFactory(video.vid, video.title));
+			removeButtonBox.addEventListener('click', remove(video.vid, video.title));
 			videoFloatContainer.appendChild(removeButtonBox);
 		});
 	}
