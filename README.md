@@ -10,6 +10,9 @@ Download: [add-ons.mozilla.org](https://addons.mozilla.org/en-US/firefox/addon/r
 ## Icons
 resumeLater uses [elementary Icons](https://launchpad.net/elementaryicons).
 
+## Contributors
+[ico43](https://github.com/ico43)
+
 ## License
 resumeLater is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

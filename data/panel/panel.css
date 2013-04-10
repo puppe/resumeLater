@@ -18,102 +18,102 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
 body {
-	background-color: white;
-	position: relative;
-	width: 300px;
-	overflow: auto;
-	font-family: sans-serif;
-	font-size: small;
+    background-color: white;
+    position: relative;
+    width: 300px;
+    overflow: auto;
+    font-family: sans-serif;
+    font-size: small;
 }
 
 .clickable, .clickableBad {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .clickable:hover {
-	background-color: rgb(244, 244, 170);
+    background-color: rgb(244, 244, 170);
 }
 
 .clickable:active {
-	background-color: rgb(244, 244, 110);
+    background-color: rgb(244, 244, 110);
 }
 
 .clickableBad:hover {
-	background-color: rgb(255, 170, 170);
+    background-color: rgb(255, 170, 170);
 }
 
 .clickableBad:active {
-	background-color: rgb(255, 110, 110);
+    background-color: rgb(255, 110, 110);
 }
 
 menu#videoList {
-	list-style-type: none;
-	padding: 0.2em;
+    list-style-type: none;
+    padding: 0.2em;
 }
 
 .video {
-	border: 0.1em solid rgb(170, 170, 110);
-	border-collapse: collapse;
-	clear: both;
-	margin: 0.4em;
-	text-align: center;
+    border: 0.1em solid rgb(170, 170, 110);
+    border-collapse: collapse;
+    clear: both;
+    margin: 0.4em;
+    text-align: center;
 }
 
 
 .videoFloatContainer {
-	overflow: auto;
+    overflow: auto;
 }
 
 .videoInfoBox {
-	float: left;
-	text-align: left;
-	width: 94%;
+    float: left;
+    text-align: left;
+    width: 94%;
 }
 
 .videoTitle {
 }
 
 .videoTime {
-	margin-left: 1em;
-	font-size: x-small;
+    margin-left: 1em;
+    font-size: x-small;
 }
 
 .removeButtonBox {
-	float: right;
+    float: right;
 }
 
 .dialogBox {
-	border: 0.2em dashed rgb(255, 170, 170);
-	display: inline-block;
-	margin: 0.5em;
-	padding: 0 0.5em;
-	text-align: center;
+    border: 0.2em dashed rgb(255, 170, 170);
+    display: inline-block;
+    margin: 0.5em;
+    padding: 0 0.5em;
+    text-align: center;
 }
 
 .dialogBox > p {
-	margin: 0.5em 0;
+    margin: 0.5em 0;
 }
 
 .dialogButton {
-	margin: 0 0.5em;
+    margin: 0 0.5em;
 }
 
 .wrapper {
-	padding-bottom: 3em;
-	padding-top: 0;
-	padding-right: 0;
-	padding-left: 0;
+    padding-bottom: 3em;
+    padding-top: 0;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 footer {
-	background-color: white;
-	position: fixed;
-	bottom: 0px;
-	text-align: center;
-	width: 300px;
+    background-color: white;
+    position: fixed;
+    bottom: 0px;
+    text-align: center;
+    width: 300px;
 }
 
 #footerButtons {
-	text-align: center;
+    text-align: center;
 }
-/* vim: set noet ts=2 sw=2 sts=0 */
+/* vim: set ts=4 sw=4 sts=4 tw=72 et :*/

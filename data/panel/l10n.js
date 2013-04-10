@@ -21,12 +21,12 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 /*global locale:true*/
 
 var l10n = (function (locale) {
-	'use strict';
+    'use strict';
 
-	function get(id) {
-		return locale[id];
-	}
+    function get(id) {
+        return locale[id];
+    }
 
-	return get;
+    return get;
 }) (locale);
-	// vim: set noet ts=2 sw=2 sts=0
+// vim: set ts=4 sw=4 sts=4 tw=72 et :

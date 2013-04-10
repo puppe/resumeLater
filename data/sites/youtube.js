@@ -23,9 +23,9 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 var playerId;
 
 if (document.getElementById("movie_player") == null) {
-	playerId = 'movie_player-html5';
+    playerId = 'movie_player-html5';
 } else {
-	playerId = 'movie_player';
+    playerId = 'movie_player';
 }
 
 var player = document.getElementById(playerId).wrappedJSObject;
@@ -36,6 +36,6 @@ player.pauseVideo();
 // make sure not an unsafe object
 time = String(time);
 if (typeof time === "string") {
-	self.port.emit("time", time);
+    self.port.emit("time", time);
 }
-// vim: set noet ts=2 sw=2 sts=0
+// vim: set ts=4 sw=4 sts=4 tw=72 et :
