@@ -18,9 +18,10 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
 var locale = {
-	'remove?' : 'Dieses Video entfernen?',
-	'Okay' : 'Okay',
-	'Cancel' : 'Abbrechen',
-	'private browsing' : 'Im privaten Modus können keine Videos gespeichert werden.',
-	'no video' : 'Kann kein Video finden!'
+    'remove?' : 'Dieses Video entfernen?',
+    'Okay' : 'Okay',
+    'Cancel' : 'Abbrechen',
+    'private browsing' : 'Im privaten Modus können keine Videos gespeichert werden.',
+    'no video' : 'Kann kein Video finden!'
 };
+// vim: set ts=4 sw=4 sts=4 tw=72 et :
