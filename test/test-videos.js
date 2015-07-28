@@ -23,7 +23,7 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 
 const timers = require('sdk/timers');
 
-const videos = require('./videos');
+const videos = require('../lib/videos');
 const Video = videos.Video;
 const VideoStorage = videos.VideoStorage;
 
