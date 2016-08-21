@@ -136,7 +136,9 @@ exports['test VideoStorage.add, oneVideoPerPlaylist = true'] = function (assert)
         }
     };
     var storage = { videos: {} };
-    var videoStorage = new VideoStorage(storage, simplePrefs);
+    var videoStorage = new VideoStorage(storage, {
+        "simplePrefs": simplePrefs
+    });
 
     videoStorage.add(video4);
     videoStorage.add(video5);
@@ -200,16 +202,20 @@ exports['test VideoStorage.getAll'] = function (assert) {
 
 exports['test VideoStorage.add update event'] = function (assert, done) {
     var storage = {};
-    var videoStorage = new VideoStorage(storage);
+
+    function onUpdate(_) {
+        assert.ok(true, 'VideoStorage.add triggers "update" event');
+        done();
+    }
+
+    var videoStorage = new VideoStorage(storage, {
+        "onUpdate": onUpdate
+    });
 
     timers.setTimeout(function () {
         done();
     }, 2000);
 
-    videoStorage.once('update', function () {
-        assert.ok(true, 'VideoStorage.add triggers "update" event');
-        done();
-    });
     videoStorage.add(video1);
 };
 
@@ -217,15 +223,22 @@ exports['test VideoStorage.remove update event'] = function (assert, done) {
     var storage = {};
     var videoStorage = new VideoStorage(storage);
 
+    var count = 0;
+
+    function onUpdate(_) {
+        count++;
+        if (count === 2) {
+            assert.ok(true,
+                      'VideoStorage.remove triggers "update" event');
+            done();
+        }
+    }
+
     timers.setTimeout(function () {
         done();
     }, 2000);
 
     videoStorage.add(video1);
-    videoStorage.once('update', function () {
-        assert.ok(true, 'VideoStorage.remove triggers "update" event');
-        done();
-    });
     videoStorage.remove(video1.vid);
 };
 
