@@ -19,5 +19,8 @@
         "description": "Only keep one video per (Youtube) playlist",
         "type": "bool",
         "value": false
-    }]
+    }],
+    "permissions": {
+        "multiprocess": true
+    }
 }
