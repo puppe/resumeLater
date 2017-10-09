@@ -1,3 +1,4 @@
+/* globals browser */
 "use strict";
 
 // Ask to the legacy part to dump the needed data and send it back
