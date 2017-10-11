@@ -1,8 +1,13 @@
 {
-    "name": "SDK Transition Addon",
-    "version": "0.2.0",
+    "name": "resumelater",
+    "version": "1.1.0",
     "manifest_version": 2,
     "permissions": ["storage", "notifications"],
+    "applications": {
+        "gecko": {
+            "id": "resumeLater@mpuppe.de"
+        }
+    },
     "background": {
         "scripts": ["background.js"]
     },
