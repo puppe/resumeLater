@@ -1,4 +1,4 @@
-/* globals browser */
+/* globals browser, console */
 "use strict";
 
 // Ask to the legacy part to dump the needed data and send it back
@@ -10,5 +10,7 @@ port.onMessage.addListener((msg) => {
         browser.storage.local.set({
             'legacy': msg,
         });
+        console.debug('Received data from legacy add-on:');
+        console.debug(msg);
     }
 });

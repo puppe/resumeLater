@@ -2,7 +2,7 @@
     "name": "resumelater",
     "version": "1.1.0",
     "manifest_version": 2,
-    "permissions": ["storage", "notifications"],
+    "permissions": ["storage"],
     "applications": {
         "gecko": {
             "id": "resumeLater@mpuppe.de"
@@ -10,12 +10,5 @@
     },
     "background": {
         "scripts": ["background.js"]
-    },
-    "content_scripts": [],
-    "browser_action": {
-        "browser_style": true,
-        "default_icon": "icons/icon-32.png",
-        "default_title": "button label",
-        "default_popup": "popup.html"
     }
 }
