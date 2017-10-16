@@ -1,5 +1,5 @@
 /*
-Copyright © 2012-2016 Martin Puppe
+Copyright © 2012-2017 Martin Puppe
 
 This file is part of resumeLater.
 
@@ -17,15 +17,22 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*jshint esnext:true,globalstrict:true*/
 /*global exports*/
 'use strict';
 
+/*
 const data = require('sdk/self').data;
 const setTimeout = require('sdk/timers').setTimeout;
 const tabs = require('sdk/tabs');
 
 const videos = require('../videos');
+*/
+
+var data = {};
+var setTimeout = {};
+var tabs = {};
+
+var videos = {};
 
 function VideoNotFoundError(message) {
     this.name = 'VideoNotFoundError';
@@ -110,11 +117,6 @@ function resumeVideo(video) {
     tabs.open(url);
 }
 
-// properties
-exports.pattern = /^https:\/\/[^\/]*\.youtube\.com\/\S*$/;
-
-// functions
-exports.getVideo = getVideo;
-exports.resumeVideo = resumeVideo;
-
-// vim: set ts=4 sw=4 sts=4 tw=72 et :
+(function () {
+    return "Hello, World!";
+})();

@@ -5,15 +5,21 @@ resumeLater is an extension for Mozilla Firefox. It lets you bookmark videos on 
 Download: [add-ons.mozilla.org](https://addons.mozilla.org/en-US/firefox/addon/resumelater/)
 
 ## Supported Sites
+
  * Youtube
 
 ## Icons
+
 resumeLater uses [elementary Icons](https://launchpad.net/elementaryicons).
 
 ## Contributors
+
 [ico43](https://github.com/ico43)
 
-## License
+## Copyright and License
+
+Copyright © 2012-2017 Martin Puppe
+
 resumeLater is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
