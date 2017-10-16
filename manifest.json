@@ -1,7 +1,15 @@
 {
-    "name": "resumelater",
-    "version": "1.1.0",
     "manifest_version": 2,
+    "name": "resumelater",
+    "version": "2.0.0",
+    "description": "Bookmark Youtube videos, saving the current position. Resume playback later.",
+    "author": "Martin Puppe",
+    "homepage-url": "https://github.com/puppe/resumeLater",
+    "icons": {
+        "48": "icons/resumelater-48.png",
+        "64": "icons/resumelater-64.png",
+        "96": "icons/resumelater-96.png"
+    },
     "permissions": ["storage"],
     "applications": {
         "gecko": {
