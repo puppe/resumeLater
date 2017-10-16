@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "description": "Bookmark Youtube videos, saving the current position. Resume playback later.",
     "author": "Martin Puppe",
-    "homepage-url": "https://github.com/puppe/resumeLater",
+    "homepage_url": "https://github.com/puppe/resumeLater",
     "icons": {
         "48": "icons/resumelater-48.png",
         "64": "icons/resumelater-64.png",
