@@ -60,7 +60,12 @@
         browser.tabs.executeScript(
             tab.id,
             { 'file': '/youtube.js' }
-        ).then(([result]) => {
+        ).then((result) => {
+            // Firefox 50 and later versions always pass an array into
+            // the callback, but older versions pass a single result
+            // value under some circumstances.
+            // See https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/executeScript#compatNote_1
+            result = Array.isArray(result) ? result[0] : result;
             console.log(result);
         });
     });
