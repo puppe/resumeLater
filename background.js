@@ -21,7 +21,8 @@
 
 // Taken with some adjustments from
 // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Converting_Match_Patterns_to_Regular_Expressions
-(function () {
+
+(function (youtube) {
     'use strict';
 
     function matchPatternToRegExp(pattern) {
@@ -57,17 +58,9 @@
     });
 
     browser.pageAction.onClicked.addListener(tab => {
-        browser.tabs.executeScript(
-            tab.id,
-            { 'file': '/youtube.js' }
-        ).then((result) => {
-            // Firefox 50 and later versions always pass an array into
-            // the callback, but older versions pass a single result
-            // value under some circumstances.
-            // See https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/executeScript#compatNote_1
-            result = Array.isArray(result) ? result[0] : result;
-            console.log(result);
+        youtube.getVideo(tab).then(video => {
+            console.log(JSON.stringify(video));
         });
     });
 
-}) ();
+})(youtube);

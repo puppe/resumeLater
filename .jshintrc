@@ -1,4 +1,4 @@
 {
     "esversion": 6,
-    "strict": "global"
+    "strict": true
 }

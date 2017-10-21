@@ -17,66 +17,56 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-'use strict';
-
-(function () {
-
-    var data = {};
-    var setTimeout = {};
-    var tabs = {};
-
-    var videos = {};
+let youtube = (function (videos) {
+    'use strict';
 
     function VideoNotFoundError(message) {
         this.name = 'VideoNotFoundError';
-        this.message = message || 'No video was found.';
+        this.message = message || 'No video has been found.';
     }
     VideoNotFoundError.prototype = new Error();
     VideoNotFoundError.prototype.constructor = VideoNotFoundError;
 
-    function getParameters(url) {
-        var splits = url.split('?');
-
-        if (splits.length === 1) {
-            return {};
-        }
-
-        var queryString = splits[splits.length - 1];
-        splits = queryString.split('&');
-        var params = {};
-        var keyValue;
-        for (var i = 0, l = splits.length; i < l; i++) {
-            keyValue = splits[i].split('=');
-            params[keyValue[0]] = keyValue[1];
-        }
-
-        return params;
-    }
-
-    function getTime(tab) {
-        var promise = new Promise(function(resolve, reject) {
-
-            var worker = tab.attach({
-                contentScriptFile: [
-                    data.url("sites/youtube.js")
-                ]
-            });
-
-            worker.port.on('time', function(time) {
-                resolve(time);
-                worker.destroy();
-            });
-
-            setTimeout(function() {
-                reject(new VideoNotFoundError());
-            }, 1000);
-        });
-
-        return promise;
-    }
-
     function getVideo(tab) {
-        const video = {};
+
+        function getParameters(url) {
+            var splits = url.split('?');
+
+            if (splits.length === 1) {
+                return {};
+            }
+
+            var queryString = splits[splits.length - 1];
+            splits = queryString.split('&');
+            var params = {};
+            var keyValue;
+            for (var i = 0, l = splits.length; i < l; i++) {
+                keyValue = splits[i].split('=');
+                params[keyValue[0]] = keyValue[1];
+            }
+
+            return params;
+        }
+
+        function getTime(tab) {
+            return browser.tabs.executeScript(
+                tab.id,
+                { 'file': 'youtube/getTime.js'}
+            ).then(
+                value => {
+                    // Firefox 50 and later versions always pass an
+                    // array into the promise, but older versions pass a
+                    // single result value under some circumstances.
+                    // See https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/executeScript#compatNote_1
+                    return Array.isArray(value) ? value[0] : value;
+                },
+                reason => {
+                    return new VideoNotFoundError();
+                }
+            );
+        }
+
+        let video = {};
         video.title = tab.title;
 
         var params = getParameters(tab.url);
@@ -89,26 +79,29 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             video.playlistId = params.list;
         }
 
-        return getTime(tab).then(function success(time) {
+        return getTime(tab).then(time => {
             video.time = time;
             return video;
         });
     }
 
     function resumeVideo(video) {
-        var site = 'youtube';
-        var id = videos.getId(video);
-        var url = "https://www.youtube.com/watch?v=" + id +
+        const site = 'youtube';
+        const id = videos.getId(video.vid);
+        let url = 'https://www.youtube.com/watch?v=' + id +
             '&t=' + Math.floor(video.time) + 's';
 
-        // Adds the playlist parameter to the URL if the video is part of a
-        // playlist
+        // Adds the playlist parameter to the URL if the video is part
+        // of a playlist
         if (video.playlistId) {
             url += "&list=" + video.playlistId;
         }
 
-        tabs.open(url);
+        browser.tabs.create({ url: url, });
     }
 
-    return "Hello, World!";
-})();
+    return {
+        getVideo: getVideo,
+        resumeVideo: resumeVideo,
+    };
+})(videos);

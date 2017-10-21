@@ -1,5 +1,5 @@
 /*
-Copyright © 2012 Martin Puppe
+Copyright © 2012-2017 Martin Puppe
 
 This file is part of resumeLater.
 
@@ -17,25 +17,30 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*jshint browser:true*/
-/*global self*/
+/* jshint browser:true */
 
-var playerId;
+(function () {
+    'use strict';
 
-if (document.getElementById("movie_player") == null) {
-    playerId = 'movie_player-html5';
-} else {
-    playerId = 'movie_player';
-}
+    var playerId;
 
-var player = document.getElementById(playerId).wrappedJSObject;
+    if (document.getElementById("movie_player") == null) {
+        playerId = 'movie_player-html5';
+    } else {
+        playerId = 'movie_player';
+    }
 
-var time = player.getCurrentTime();
-player.pauseVideo();
+    var player = document.getElementById(playerId).wrappedJSObject;
 
-// make sure not an unsafe object
-time = String(time);
-if (typeof time === "string") {
-    self.port.emit("time", time);
-}
-// vim: set ts=4 sw=4 sts=4 tw=72 et :
+    var time = player.getCurrentTime();
+    player.pauseVideo();
+
+    if (!time) {
+        throw new Error('No video has been found.');
+    }
+
+    // make sure not an unsafe object
+    time = String(time);
+
+    return time;
+})();

@@ -22,7 +22,11 @@
         }
     },
     "background": {
-        "scripts": ["background.js"]
+        "scripts": [
+            "videos.js",
+            "youtube.js",
+            "background.js"
+        ]
     },
     "page_action": {
         "default_title": "Resume later",

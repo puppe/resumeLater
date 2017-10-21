@@ -22,14 +22,12 @@ let videos = (function () {
 
     const SCHEMA_VERSION = 1;
 
-    function getSiteName(video) {
-        var vid = video.vid;
-        return vid.slice(0, vid.indexOf("_"));
+    function getSiteName(vid) {
+        return vid.slice(0, vid.indexOf('_'));
     }
 
-    function getId(video) {
-        var vid = video.vid;
-        return vid.slice(vid.indexOf("_") + 1, vid.length);
+    function getId(vid) {
+        return vid.slice(vid.indexOf('_') + 1);
     }
 
     var upgradeFunctions = [];
