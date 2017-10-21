@@ -22,7 +22,7 @@
 // Taken with some adjustments from
 // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Converting_Match_Patterns_to_Regular_Expressions
 
-(function (youtube) {
+(function (videos, youtube) {
     'use strict';
 
     function matchPatternToRegExp(pattern) {
@@ -57,10 +57,21 @@
         }
     });
 
+    function onVideoStorageUpdate(videoStorage) {
+        browser.storage.local.set({
+            videoStorage: videoStorage.getData(),
+        });
+    }
+
+    const videoStorage = new videos.VideoStorage(
+        {},
+        { onUpdate: onVideoStorageUpdate, }
+    );
+
     browser.pageAction.onClicked.addListener(tab => {
         youtube.getVideo(tab).then(video => {
-            console.log(JSON.stringify(video));
+            videoStorage.add(video);
         });
     });
 
-})(youtube);
+})(videos, youtube);

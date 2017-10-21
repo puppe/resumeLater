@@ -46,9 +46,9 @@ let videos = (function () {
 
     function VideoStorage(storage, optional) {
         optional = optional || {};
-        var { simplePrefs, onUpdate } = optional;
-
+        let { oneVideoPerPlaylist, onUpdate, } = optional;
         onUpdate = onUpdate || function(_) {};
+        oneVideoPerPlaylist = oneVideoPerPlaylist || false;
 
         // upgrade storage to current schema version
         if ('videos' in storage) {
@@ -73,9 +73,7 @@ let videos = (function () {
             copy.lastModified = new Date().getTime();
 
             // optionally only keep one video per playlist
-            if (copy.playlistId &&
-                simplePrefs &&
-                simplePrefs.prefs.oneVideoPerPlaylist) {
+            if (copy.playlistId && oneVideoPerPlaylist) {
                 for (var vid in storage.videos) {
                     if (storage.videos.hasOwnProperty(vid) &&
                         storage.videos[vid].playlistId === copy.playlistId) {
@@ -108,6 +106,12 @@ let videos = (function () {
             }
             return array;
         };
+
+        this.getData = function getData() {
+            return storage;
+        };
+
+        onUpdate(this);
     }
 
     return {
