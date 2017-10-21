@@ -41,10 +41,11 @@ let videos = (function () {
                 delete storage.videos[vid].timeAdded;
             }
         }
+        storage.schemaVersion = 1;
     };
 
     function VideoStorage(storage, optional) {
-        optional = optional || {};
+        optional = optional || {};
         var { simplePrefs, onUpdate } = optional;
 
         onUpdate = onUpdate || function(_) {};
@@ -54,7 +55,6 @@ let videos = (function () {
             storage.schemaVersion = storage.schemaVersion || 0;
             while (storage.schemaVersion < SCHEMA_VERSION) {
                 upgradeFunctions[storage.schemaVersion](storage);
-                storage.schemaVersion++;
             }
         } else {
             storage.videos = {};
@@ -114,6 +114,5 @@ let videos = (function () {
         getSiteName: getSiteName,
         getId: getId,
         VideoStorage: VideoStorage,
-        SCHEMA_VERSION: SCHEMA_VERSION,
     };
 })();
