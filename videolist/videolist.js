@@ -17,8 +17,6 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*jshint browser:true,esnext:true*/
-/*global self, console, l10n*/
 (function (_) {
     'use strict';
     var rlbutton = document.getElementById('resumeLaterButton');
@@ -155,11 +153,13 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
         self.port.emit("save");
     });
 
+    /*
     self.port.on('update', updateList);
     self.port.on('no video', function () {
         showNotification(_('no video'));
     });
+    */
 
-}) (l10n);
+}) (function _(string) { 'use strict'; return str; });
 
 // vim: set ts=4 sw=4 sts=4 tw=72 et :
