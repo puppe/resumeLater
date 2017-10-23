@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-(function (_) {
+(function () {
     'use strict';
     const bg = browser.extension.getBackgroundPage().background;
     const youtube = browser.extension.getBackgroundPage().youtube;
@@ -84,4 +84,4 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 
     updateList(bg.videoStorage.getAll());
 
-}) (function _(string) { 'use strict'; return str; });
+})();
