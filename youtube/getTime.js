@@ -40,7 +40,7 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
     }
 
     // make sure not an unsafe object
-    time = String(time);
+    time = Number(time);
 
     return time;
 })();

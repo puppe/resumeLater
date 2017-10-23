@@ -61,16 +61,24 @@ let videos = (function () {
             storage.schemaVersion = SCHEMA_VERSION;
         }
 
-        this.add = function add(video) {
-            var properties = ['vid', 'title', 'time', 'playlistId'];
-            var copy = {};
+        function copyVideo(video) {
+            let properties = ['vid', 'title', 'time', 'playlistId', 'lastModified'];
+            let copy = {};
 
             properties.forEach(function (prop) {
                 if (prop in video) {
                     copy[prop] = video[prop];
                 }
             });
+
+            return copy;
+        }
+
+        this.add = function add(video) {
+            let copy = copyVideo(video);
             copy.lastModified = new Date().getTime();
+            // TODO Save time as Number instead of String
+            copy.time = String(copy.time);
 
             // optionally only keep one video per playlist
             if (copy.playlistId && oneVideoPerPlaylist) {
@@ -94,14 +102,16 @@ let videos = (function () {
         };
 
         this.get = function get(vid) {
-            return storage.videos[vid];
+            let copy = copyVideo(storage.videos[vid]);
+            copy.time = Number(copy.time);
+            return copy;
         };
 
         this.getAll = function getAll() {
             var array = [];
             for (var vid in storage.videos) {
                 if (storage.videos.hasOwnProperty(vid)) {
-                    array.push(storage.videos[vid]);
+                    array.push(this.get(vid));
                 }
             }
             return array;
