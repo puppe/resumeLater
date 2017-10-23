@@ -22,7 +22,7 @@
 // Taken with some adjustments from
 // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Converting_Match_Patterns_to_Regular_Expressions
 
-(function (videos, youtube) {
+var background = (function (videos, youtube) {
     'use strict';
 
     function matchPatternToRegExp(pattern) {
@@ -77,5 +77,9 @@
     browser.browserAction.onClicked.addListener(tab => {
         browser.tabs.create({ url: '/videolist/videolist.html' });
     });
+
+    return {
+        videoStorage: videoStorage,
+    };
 
 })(videos, youtube);

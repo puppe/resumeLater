@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-let videos = (function () {
+var videos = (function () {
     'use strict';
 
     const SCHEMA_VERSION = 1;
