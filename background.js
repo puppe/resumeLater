@@ -69,9 +69,25 @@ var background = (function (videos, youtube) {
     );
 
     browser.pageAction.onClicked.addListener(tab => {
-        youtube.getVideo(tab).then(video => {
-            videoStorage.add(video);
-        });
+        youtube.getVideo(tab).then(
+            video => {
+                videoStorage.add(video);
+                browser.notifications.create({
+                    type: 'basic',
+                    title: 'Added video',
+                    message: 'The video on this page has been added ' +
+                        'to your list of videos.',
+                });
+            },
+            reason => {
+                browser.notifications.create({
+                    type: 'basic',
+                    title: 'Found no video',
+                    message: 'resumeLater could find no video on ' +
+                        'this page.',
+                });
+            }
+        );
     });
 
     browser.browserAction.onClicked.addListener(tab => {

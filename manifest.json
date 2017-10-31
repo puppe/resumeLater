@@ -12,6 +12,7 @@
     },
     "permissions": [
         "*://*.youtube.com/*",
+        "notifications",
         "storage",
         "tabs"
     ],
