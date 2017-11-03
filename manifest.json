@@ -22,12 +22,9 @@
             "strict_min_version": "48.0"
         }
     },
+    "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net; object-src 'self'",
     "background": {
-        "scripts": [
-            "videos.js",
-            "youtube.js",
-            "background.js"
-        ]
+        "page": "background.html"
     },
     "browser_action": {
         "default_title": "Open list of videos",

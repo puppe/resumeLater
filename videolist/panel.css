@@ -46,7 +46,7 @@ body {
     background-color: rgb(255, 110, 110);
 }
 
-menu#videoList {
+ul#videoList {
     list-style-type: none;
     padding: 0.2em;
 }

@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var videos = (function () {
+var videos = (function (Immutable) {
     'use strict';
 
     const SCHEMA_VERSION = 1;
@@ -30,103 +30,84 @@ var videos = (function () {
         return vid.slice(vid.indexOf('_') + 1);
     }
 
-    var upgradeFunctions = [];
+    let upgradeFunctions = [];
 
-    upgradeFunctions[0] = function upgradeFrom0(storage) {
-        for (var vid in storage.videos) {
-            if (typeof storage.videos[vid] === 'undefined') {
-                delete storage.videos[vid];
-            } else if (!('lastModified' in storage.videos[vid])) {
-                storage.videos[vid].lastModified = storage.videos[vid].timeAdded || 0;
-                delete storage.videos[vid].timeAdded;
-            }
-        }
-        storage.schemaVersion = 1;
+    // upgradeFrom0 has been removed because only videoStorage with
+    // schemaVersion === 1 has been migrated to the webextension
+
+    upgradeFunctions[1] = function upgradeFrom1(videoStorage) {
+        // convert all time stamps from strings to numbers
+        videoStorage.update('videos', videos => {
+            videos.map(video => video.update('time', Number));
+        });
     };
 
-    function VideoStorage(storage, optional) {
-        optional = optional || {};
-        let { oneVideoPerPlaylist, onUpdate, } = optional;
-        onUpdate = onUpdate || function(_) {};
+    function ensureSchema(videoStorage) {
+        if (Immutable.Map.isMap(videoStorage) &&
+            videoStorage.get('schemaVersion')) {
+            // videoStorage is already initialized 
+            while (videoStorage.get('schemaVersion') < SCHEMA_VERSION) {
+                let schemaVersion = videoStorage.get('schemaVersion');
+                videoStorage =
+                    upgradeFunctions[schemaVersion](videoStorage);
+            }
+            return videoStorage;
+        } else {
+            // videoStorage needs to be initialized
+            return Immutable.Map.of(
+                'schemaVersion', SCHEMA_VERSION,
+                'videos', Immutable.Map());
+        }
+    }
+
+    function load(storageArea) {
+        return storageArea.get('videoStorage')
+            .then(obj => Immutable.fromJS(obj.videoStorage));
+    }
+
+    function save(storageArea, videoStorage) {
+        return storageArea.set({
+            'videoStorage': videoStorage.toJS(),
+        });
+    }
+
+    function add(videoStorage, newVideo, oneVideoPerPlaylist) {
         oneVideoPerPlaylist = oneVideoPerPlaylist || false;
 
-        // upgrade storage to current schema version
-        if ('videos' in storage) {
-            storage.schemaVersion = storage.schemaVersion || 0;
-            while (storage.schemaVersion < SCHEMA_VERSION) {
-                upgradeFunctions[storage.schemaVersion](storage);
-            }
-        } else {
-            storage.videos = {};
-            storage.schemaVersion = SCHEMA_VERSION;
-        }
+        newVideo = newVideo.set('lastModified', new Date().getTime());
 
-        function copyVideo(video) {
-            let properties = ['vid', 'title', 'time', 'playlistId', 'lastModified'];
-            let copy = {};
+        let videos = videoStorage.get('videos');
 
-            properties.forEach(function (prop) {
-                if (prop in video) {
-                    copy[prop] = video[prop];
-                }
+        if (newVideo.has('playlistId') && oneVideoPerPlaylist) {
+            videos = videos.filter(video => {
+                return video.get('playlistId') !==
+                    newVideo.get('playlistId');
             });
-
-            return copy;
         }
+        videos = videos.set(newVideo.get('vid'), newVideo);
+        return videoStorage.set('videos', videos);
+    }
 
-        this.add = function add(video) {
-            let copy = copyVideo(video);
-            copy.lastModified = new Date().getTime();
-            // TODO Save time as Number instead of String
-            copy.time = String(copy.time);
+    function remove(videoStorage, vid) {
+        return videoStorage.removeIn(['videos', vid]);
+    }
 
-            // optionally only keep one video per playlist
-            if (copy.playlistId && oneVideoPerPlaylist) {
-                for (var vid in storage.videos) {
-                    if (storage.videos.hasOwnProperty(vid) &&
-                        storage.videos[vid].playlistId === copy.playlistId) {
-                        this.remove(vid, true);
-                    }
-                }
-            }
+    function get(videoStorage, vid) {
+        return videoStorage.getIn(['videos', vid]);
+    }
 
-            storage.videos[copy.vid] = copy;
-            onUpdate(this);
-        };
-
-        this.remove = function remove(vid, silent) {
-            delete storage.videos[vid];
-            if (!silent) {
-                onUpdate(this);
-            }
-        };
-
-        this.get = function get(vid) {
-            let copy = copyVideo(storage.videos[vid]);
-            copy.time = Number(copy.time);
-            return copy;
-        };
-
-        this.getAll = function getAll() {
-            var array = [];
-            for (var vid in storage.videos) {
-                if (storage.videos.hasOwnProperty(vid)) {
-                    array.push(this.get(vid));
-                }
-            }
-            return array;
-        };
-
-        this.getData = function getData() {
-            return storage;
-        };
-
-        onUpdate(this);
+    function getAll(videoStorage) {
+        return videoStorage.get('videos').valueSeq()
+            .map(video => get(videoStorage, video.get('vid')));
     }
 
     return {
         getSiteName: getSiteName,
         getId: getId,
-        VideoStorage: VideoStorage,
+        ensureSchema: ensureSchema,
+        add: add,
+        remove: remove,
+        get: get,
+        getAll: getAll,
     };
-})();
+})(Immutable);

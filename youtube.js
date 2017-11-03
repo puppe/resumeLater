@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-var youtube = (function (videos) {
+var youtube = (function (videos, Immutable) {
     'use strict';
 
     function VideoNotFoundError(message) {
@@ -81,20 +81,20 @@ var youtube = (function (videos) {
 
         return getTime(tab).then(time => {
             video.time = time;
-            return video;
+            return Immutable.Map(video);
         });
     }
 
     function getResumeUrl(video) {
         const site = 'youtube';
-        const id = videos.getId(video.vid);
+        const id = videos.getId(video.get('vid'));
         let url = 'https://www.youtube.com/watch?v=' + id +
-            '&t=' + Math.floor(video.time) + 's';
+            '&t=' + Math.floor(video.get('time')) + 's';
 
         // Adds the playlist parameter to the URL if the video is part
         // of a playlist
-        if (video.playlistId) {
-            url += "&list=" + video.playlistId;
+        if (video.has('playlistId')) {
+            url += "&list=" + video.get('playlistId');
         }
 
         return url;
@@ -109,4 +109,4 @@ var youtube = (function (videos) {
         getVideo: getVideo,
         resumeVideo: resumeVideo,
     };
-})(videos);
+})(videos, Immutable);

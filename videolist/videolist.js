@@ -1,5 +1,5 @@
 /*
-Copyright © 2012 Martin Puppe
+Copyright © 2012-2017 Martin Puppe
 
 This file is part of resumeLater.
 
@@ -20,9 +20,13 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 (function () {
     'use strict';
     const bg = browser.extension.getBackgroundPage().background;
+    const stateHistory = browser.extension.getBackgroundPage()
+          .stateHistory;
+    const videos = browser.extension.getBackgroundPage().videos;
     const youtube = browser.extension.getBackgroundPage().youtube;
 
-    function updateList(videos) {
+    function updateList(key, videoHistoryAtom, oldVideoHistory,
+                       newVideoHistory) {
         function prettyTime(time) {
             var minutes = Math.floor(time / 60).toString();
             var seconds = Math.floor(time % 60).toString();
@@ -32,8 +36,11 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             return minutes + ":" + seconds;
         }
 
+        let videoStorage = stateHistory.current(newVideoHistory);
+        let videoSeq = videos.getAll(videoStorage);
+
         // put newest video on top
-        videos.sort(function (video1, video2) {
+        videoSeq.sort(function (video1, video2) {
             return video2.lastModified - video1.lastModified;
         });
 
@@ -44,10 +51,10 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
         }
 
         // populate video list
-        videos.forEach(function (video) {
+        videoSeq.forEach(function (video) {
             var videoElement = document.createElement('li');
             videoElement.className = 'video';
-            videoElement.id = video.vid;
+            videoElement.id = video.get('vid');
             videoList.appendChild(videoElement);
 
             var videoFloatContainer = document.createElement('div');
@@ -61,8 +68,9 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             videoInfoBox.className = 'videoInfoBox';
             videoInfoBox.innerHTML = '<span class="videoTitle"></span>' +
                 '<span class="videoTime"></span>';
-            videoInfoBox.firstChild.textContent = video.title;
-            videoInfoBox.lastChild.textContent = prettyTime(video.time);
+            videoInfoBox.firstChild.textContent = video.get('title');
+            videoInfoBox.lastChild.textContent =
+                prettyTime(video.get('time'));
             videoLink.appendChild(videoInfoBox);
 
             videoFloatContainer.appendChild(videoLink);
@@ -72,16 +80,26 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             removeButton.textContent = 'Remove';
             removeButton.addEventListener('click', (event) => {
                 removeButton.disabled = true;
-                bg.videoStorage.remove(video.vid);
+                videoHistoryAtom.swap(bg.removeVideo, video.get('vid'));
             });
             videoFloatContainer.appendChild(removeButton);
         });
     }
 
-    browser.storage.onChanged.addListener((changes, areaName) => {
-        updateList(bg.videoStorage.getAll());
-    });
+    bg.videoHistoryAtomPromise.then(videoHistoryAtom => {
+        const watchKey = 'videoList.updateList';
+        videoHistoryAtom.addWatch(watchKey, updateList);
+        updateList(watchKey, videoHistoryAtom, null,
+                   videoHistoryAtom.deref());
 
-    updateList(bg.videoStorage.getAll());
+        const undoButton = document.getElementById('undoButton');
+        const redoButton = document.getElementById('redoButton');
+        undoButton.addEventListener('click', (event) => {
+            videoHistoryAtom.swap(stateHistory.undo);
+        });
+        redoButton.addEventListener('click', (event) => {
+            videoHistoryAtom.swap(stateHistory.redo);
+        });
+    });
 
 })();

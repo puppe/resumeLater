@@ -22,7 +22,7 @@
 // Taken with some adjustments from
 // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Converting_Match_Patterns_to_Regular_Expressions
 
-var background = (function (videos, youtube) {
+var background = (function (Immutable, atom, videos, youtube, stateHistory) {
     'use strict';
 
     function matchPatternToRegExp(pattern) {
@@ -57,45 +57,73 @@ var background = (function (videos, youtube) {
         }
     });
 
-    function onVideoStorageUpdate(videoStorage) {
+    let videoHistoryAtomPromise =
+        browser.storage.local.get('videoStorage')
+        .then(obj => Immutable.fromJS(obj.videoStorage))
+        .then(videos.ensureSchema)
+        .then(videoStorage => {
+            let videoHistory = stateHistory.createHistory();
+            return stateHistory.push(videoHistory, videoStorage);
+        })
+        .then(atom.createAtom);
+
+    function addVideo(videoHistory, video) {
+        let videoStorage = stateHistory.current(videoHistory);
+        // TODO pass oneVideoPerPlaylist into add
+        return stateHistory.push(videoHistory,
+                                 videos.add(videoStorage, video));
+    }
+
+    function removeVideo(videoHistory, vid) {
+        let videoStorage = stateHistory.current(videoHistory);
+        return stateHistory.push(videoHistory,
+                                 videos.remove(videoStorage, vid));
+    }
+
+    function saveCurrentVideoStorage(key, videoHistoryAtom,
+                                     oldVideoHistory,
+                                     newVideoHistory) {
         browser.storage.local.set({
-            videoStorage: videoStorage.getData(),
+            videoStorage: stateHistory.current(newVideoHistory).toJS()
         });
     }
 
-    const videoStorage = new videos.VideoStorage(
-        {},
-        { onUpdate: onVideoStorageUpdate, }
-    );
+    function onVideoHistoryAtom(videoHistoryAtom) {
+        videoHistoryAtom.addWatch('background.saveCurrentVideoStorage',
+                                  saveCurrentVideoStorage);
 
-    browser.pageAction.onClicked.addListener(tab => {
-        youtube.getVideo(tab).then(
-            video => {
-                videoStorage.add(video);
-                browser.notifications.create({
-                    type: 'basic',
-                    title: 'Added video',
-                    message: 'The video on this page has been added ' +
-                        'to your list of videos.',
-                });
-            },
-            reason => {
-                browser.notifications.create({
-                    type: 'basic',
-                    title: 'Found no video',
-                    message: 'resumeLater could find no video on ' +
-                        'this page.',
-                });
-            }
-        );
-    });
+        browser.pageAction.onClicked.addListener(tab => {
+            youtube.getVideo(tab).then(
+                video => {
+                    videoHistoryAtom.swap(addVideo, video);
+                    browser.notifications.create({
+                        type: 'basic',
+                        title: 'Added video',
+                        message: 'The video on this page has been ' +
+                            'added to your list of videos.',
+                    });
+                },
+                reason => {
+                    browser.notifications.create({
+                        type: 'basic',
+                        title: 'Found no video',
+                        message: 'resumeLater could find no video on ' +
+                            'this page.',
+                    });
+                }
+            );
+        });
+    }
+
+    videoHistoryAtomPromise.then(onVideoHistoryAtom);
 
     browser.browserAction.onClicked.addListener(tab => {
         browser.tabs.create({ url: '/videolist/videolist.html' });
     });
 
     return {
-        videoStorage: videoStorage,
+        removeVideo: removeVideo,
+        videoHistoryAtomPromise: videoHistoryAtomPromise,
     };
 
-})(videos, youtube);
+})(Immutable, atom, videos, youtube, stateHistory);
