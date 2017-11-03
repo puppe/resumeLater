@@ -119,11 +119,11 @@ var background = (function (Immutable, atom, videos, youtube, stateHistory) {
             };
         });
 
-    function addVideo(videoHistory, video) {
+    function addVideo(videoHistory, video, oneVideoPerPlaylist) {
         let videoStorage = stateHistory.current(videoHistory);
-        // TODO pass oneVideoPerPlaylist into add
         return stateHistory.push(videoHistory,
-                                 videos.add(videoStorage, video));
+                                 videos.add(videoStorage, video,
+                                           oneVideoPerPlaylist));
     }
 
     function removeVideo(videoHistory, vid) {
@@ -140,14 +140,19 @@ var background = (function (Immutable, atom, videos, youtube, stateHistory) {
         });
     }
 
-    function onVideoHistoryAtom(videoHistoryAtom) {
+    function onAtomPromise(atoms) {
+        let { videoHistoryAtom, prefsAtom } = atoms;
         videoHistoryAtom.addWatch('background.saveCurrentVideoStorage',
                                   saveCurrentVideoStorage);
 
         browser.pageAction.onClicked.addListener(tab => {
             youtube.getVideo(tab).then(
                 video => {
-                    videoHistoryAtom.swap(addVideo, video);
+                    videoHistoryAtom.swap(addVideo,
+                                          video,
+                                          prefsAtom.deref().get(
+                                              'oneVideoPerPlaylist'
+                                          ));
                     browser.notifications.create({
                         type: 'basic',
                         title: 'Added video',
@@ -167,7 +172,7 @@ var background = (function (Immutable, atom, videos, youtube, stateHistory) {
         });
     }
 
-    videoHistoryAtomPromise.then(onVideoHistoryAtom);
+    atomPromise.then(onAtomPromise);
 
     browser.browserAction.onClicked.addListener(tab => {
         browser.tabs.create({ url: '/videolist/videolist.html' });
