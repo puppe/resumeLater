@@ -100,5 +100,11 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
         redoButton.addEventListener('click', (event) => {
             videoHistoryAtom.swap(stateHistory.redo);
         });
+
+        const preferencesButton = document.getElementById(
+            'preferencesButton');
+        preferencesButton.addEventListener('click', (event) => {
+            browser.tabs.create({ url: '/preferences/preferences.html'});
+        });
     });
 })();

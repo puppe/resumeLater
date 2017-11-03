@@ -22,23 +22,18 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>resumeLater – List of Videos</title>
+    <title>resumeLater – Preferences</title>
 
-    <link href="panel.css" rel="stylesheet" type="text/css" media="all">
-    <script type="text/javascript" src="videolist.js" defer></script>
+    <script type="text/javascript" src="preferences.js" defer></script>
   </head>
 
   <body>
-    <div>
-      <button id="undoButton">Undo</button>
-      <button id="redoButton">Redo</button>
-      <button id="preferencesButton">Preferences</button>
-    </div>
-    <div class="wrapper">
-      <ul id="videoList">
-
-      </ul>
-    </div>
+    <form>
+      <input id="oneVideoPerPlaylistCheckbox" type="checkbox">
+      <label for="oneVideoPerPlaylistCheckbox">
+        Keep only one video per playlist
+      </label>
+    </form>
   </body>
 
 </html>
