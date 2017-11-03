@@ -47,8 +47,9 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
         let videoSeq = videos.getAll(videoStorage);
 
         // put newest video on top
-        videoSeq.sort(function (video1, video2) {
-            return video2.lastModified - video1.lastModified;
+        videoSeq = videoSeq.sort(function (video1, video2) {
+            return video2.get('lastModified') -
+                video1.get('lastModified');
         });
 
         // empty video list
