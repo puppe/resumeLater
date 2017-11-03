@@ -140,10 +140,17 @@ var background = (function (Immutable, atom, videos, youtube, stateHistory) {
         });
     }
 
+    function savePrefs(key, prefsAtom, oldPrefs, newPrefs) {
+        browser.storage.local.set({
+            prefs: newPrefs.toJS(),
+        });
+    }
+
     function onAtomPromise(atoms) {
         let { videoHistoryAtom, prefsAtom } = atoms;
         videoHistoryAtom.addWatch('background.saveCurrentVideoStorage',
                                   saveCurrentVideoStorage);
+        prefsAtom.addWatch('background.savePrefs', savePrefs);
 
         browser.pageAction.onClicked.addListener(tab => {
             youtube.getVideo(tab).then(
