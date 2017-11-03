@@ -57,15 +57,67 @@ var background = (function (Immutable, atom, videos, youtube, stateHistory) {
         }
     });
 
-    let videoHistoryAtomPromise =
-        browser.storage.local.get('videoStorage')
+    const SCHEMA_VERSION = 0;
+
+    function ensureSchema(data) {
+        let result;
+        if (data.schemaVersion === 0) {
+            result = data;
+        } else if (!('schemaVersion' in data) && 'legacy' in data) {
+            let legacy = data.legacy;
+            result =  {
+                schemaVersion: 0,
+                prefs: {
+                    oneVideoPerPlaylist: legacy.prefs
+                        .oneVideoPerPlaylist,
+                },
+                videoStorage: legacy.storage,
+            };
+        } else {
+            result =  {
+                schemaVersion: SCHEMA_VERSION,
+                prefs: {
+                    oneVideoPerPlaylist: false,
+                },
+                videoStorage: {},
+            };
+        }
+
+        result.videoStorage = videos
+            .ensureSchema(Immutable.fromJS(result.videoStorage))
+            .toJS();
+
+        return result;
+    }
+
+    let schemaPromise = browser.storage.local.get(null)
+        .then(ensureSchema)
+        .then(data => browser.storage.local.clear()
+              .then(() => data))
+        .then(data => browser.storage.local.set(data));
+
+    let videoHistoryAtomPromise = schemaPromise
+        .then(_ => browser.storage.local.get('videoStorage'))
         .then(obj => Immutable.fromJS(obj.videoStorage))
-        .then(videos.ensureSchema)
         .then(videoStorage => {
             let videoHistory = stateHistory.createHistory();
             return stateHistory.push(videoHistory, videoStorage);
         })
         .then(atom.createAtom);
+
+    let prefsAtomPromise = schemaPromise
+        .then(_ => browser.storage.local.get('prefs'))
+        .then(obj => Immutable.fromJS(obj.prefs))
+        .then(atom.createAtom);
+
+    let atomPromise = Promise
+        .all([videoHistoryAtomPromise, prefsAtomPromise])
+        .then(([videoHistoryAtom, prefsAtom]) => {
+            return {
+                videoHistoryAtom: videoHistoryAtom,
+                prefsAtom: prefsAtom,
+            };
+        });
 
     function addVideo(videoHistory, video) {
         let videoStorage = stateHistory.current(videoHistory);
@@ -123,7 +175,7 @@ var background = (function (Immutable, atom, videos, youtube, stateHistory) {
 
     return {
         removeVideo: removeVideo,
-        videoHistoryAtomPromise: videoHistoryAtomPromise,
+        atomPromise: atomPromise,
     };
 
 })(Immutable, atom, videos, youtube, stateHistory);

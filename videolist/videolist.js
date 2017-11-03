@@ -86,7 +86,7 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
         });
     }
 
-    bg.videoHistoryAtomPromise.then(videoHistoryAtom => {
+    bg.atomPromise.then(({videoHistoryAtom}) => {
         const watchKey = 'videoList.updateList';
         videoHistoryAtom.addWatch(watchKey, updateList);
         updateList(watchKey, videoHistoryAtom, null,
@@ -101,5 +101,4 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             videoHistoryAtom.swap(stateHistory.redo);
         });
     });
-
 })();

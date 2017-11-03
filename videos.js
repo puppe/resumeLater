@@ -44,7 +44,7 @@ var videos = (function (Immutable) {
 
     function ensureSchema(videoStorage) {
         if (Immutable.Map.isMap(videoStorage) &&
-            videoStorage.get('schemaVersion')) {
+            videoStorage.has('schemaVersion')) {
             // videoStorage is already initialized 
             while (videoStorage.get('schemaVersion') < SCHEMA_VERSION) {
                 let schemaVersion = videoStorage.get('schemaVersion');
