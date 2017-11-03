@@ -25,7 +25,10 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
     const videos = browser.extension.getBackgroundPage().videos;
     const youtube = browser.extension.getBackgroundPage().youtube;
 
-    function updateList(key, videoHistoryAtom, oldVideoHistory,
+    const undoButton = document.getElementById('undoButton');
+    const redoButton = document.getElementById('redoButton');
+
+    function update(key, videoHistoryAtom, oldVideoHistory,
                        newVideoHistory) {
         function prettyTime(time) {
             var minutes = Math.floor(time / 60).toString();
@@ -35,6 +38,10 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             }
             return minutes + ":" + seconds;
         }
+
+        // enable/disable undo/redo buttons
+        undoButton.disabled = !stateHistory.canUndo(newVideoHistory);
+        redoButton.disabled = !stateHistory.canRedo(newVideoHistory);
 
         let videoStorage = stateHistory.current(newVideoHistory);
         let videoSeq = videos.getAll(videoStorage);
@@ -87,13 +94,11 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
     }
 
     bg.atomPromise.then(({videoHistoryAtom}) => {
-        const watchKey = 'videoList.updateList';
-        videoHistoryAtom.addWatch(watchKey, updateList);
-        updateList(watchKey, videoHistoryAtom, null,
+        const watchKey = 'videoList.update';
+        videoHistoryAtom.addWatch(watchKey, update);
+        update(watchKey, videoHistoryAtom, null,
                    videoHistoryAtom.deref());
 
-        const undoButton = document.getElementById('undoButton');
-        const redoButton = document.getElementById('redoButton');
         undoButton.addEventListener('click', (event) => {
             videoHistoryAtom.swap(stateHistory.undo);
         });
