@@ -30,19 +30,26 @@
         );
     }
 
-    bg.atomPromise.then(({prefsAtom}) => {
-        const watchKey = 'preferences.update';
-        prefsAtom.addWatch(watchKey, update);
-        update(watchKey, prefsAtom, null, prefsAtom.deref());
+    let watchKeyPromise = browser.tabs.getCurrent()
+        .then(tab => 'preferences.update_tab' + tab.id);
 
-        oneVideoPerPlaylistCheckbox.addEventListener(
-            'change',
-            (event) => {
-                prefsAtom.swap((prefs) => {
-                    return prefs
-                        .set('oneVideoPerPlaylist',
-                             oneVideoPerPlaylistCheckbox.checked);
-                });
+    Promise.all([bg.atomPromise, watchKeyPromise])
+        .then(([{prefsAtom}, watchKey]) => {
+            prefsAtom.addWatch(watchKey, update);
+            window.addEventListener('unload', (event) => {
+                prefsAtom.removeWatch(watchKey);
+                console.log('Removed watch for key "' + watchKey + '"');
             });
-    });
+            update(watchKey, prefsAtom, null, prefsAtom.deref());
+
+            oneVideoPerPlaylistCheckbox.addEventListener(
+                'change',
+                (event) => {
+                    prefsAtom.swap((prefs) => {
+                        return prefs
+                            .set('oneVideoPerPlaylist',
+                                 oneVideoPerPlaylistCheckbox.checked);
+                    });
+                });
+        });
 })();

@@ -94,23 +94,32 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
         });
     }
 
-    bg.atomPromise.then(({videoHistoryAtom}) => {
-        const watchKey = 'videoList.update';
-        videoHistoryAtom.addWatch(watchKey, update);
-        update(watchKey, videoHistoryAtom, null,
+    let watchKeyPromise = browser.tabs.getCurrent()
+        .then(tab => 'videoList.update_tab' + tab.id);
+
+    Promise.all([bg.atomPromise, watchKeyPromise])
+        .then(([{videoHistoryAtom}, watchKey]) => {
+            videoHistoryAtom.addWatch(watchKey, update);
+            window.addEventListener('unload', (event) => {
+                videoHistoryAtom.removeWatch(watchKey);
+                console.log('Removed watch for key "' + watchKey + '"');
+            });
+            update(watchKey, videoHistoryAtom, null,
                    videoHistoryAtom.deref());
 
-        undoButton.addEventListener('click', (event) => {
-            videoHistoryAtom.swap(stateHistory.undo);
-        });
-        redoButton.addEventListener('click', (event) => {
-            videoHistoryAtom.swap(stateHistory.redo);
-        });
+            undoButton.addEventListener('click', (event) => {
+                videoHistoryAtom.swap(stateHistory.undo);
+            });
+            redoButton.addEventListener('click', (event) => {
+                videoHistoryAtom.swap(stateHistory.redo);
+            });
 
-        const preferencesButton = document.getElementById(
-            'preferencesButton');
-        preferencesButton.addEventListener('click', (event) => {
-            browser.tabs.create({ url: '/preferences/preferences.html'});
-        });
+            const preferencesButton = document.getElementById(
+                'preferencesButton');
+            preferencesButton.addEventListener('click', (event) => {
+                browser.tabs.create({
+                    url: '/preferences/preferences.html'
+                });
+            });
     });
 })();
