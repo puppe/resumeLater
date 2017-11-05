@@ -96,11 +96,6 @@ var videos = (function (Immutable) {
         return videoStorage.getIn(['videos', vid]);
     }
 
-    function getAll(videoStorage) {
-        return videoStorage.get('videos').valueSeq()
-            .map(video => get(videoStorage, video.get('vid')));
-    }
-
     return {
         getSiteName: getSiteName,
         getId: getId,
@@ -108,6 +103,5 @@ var videos = (function (Immutable) {
         add: add,
         remove: remove,
         get: get,
-        getAll: getAll,
     };
 })(Immutable);

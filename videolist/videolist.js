@@ -17,19 +17,19 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-(function () {
+(function (youtube) {
     'use strict';
-    const bg = browser.extension.getBackgroundPage().background;
-    const stateHistory = browser.extension.getBackgroundPage()
-          .stateHistory;
-    const videos = browser.extension.getBackgroundPage().videos;
-    const youtube = browser.extension.getBackgroundPage().youtube;
-
     const undoButton = document.getElementById('undoButton');
     const redoButton = document.getElementById('redoButton');
+    const preferencesButton = document.getElementById(
+        'preferencesButton');
 
-    function update(key, videoHistoryAtom, oldVideoHistory,
-                       newVideoHistory) {
+    let videosPort = browser.runtime.connect({ name: 'videos' });
+    window.addEventListener('unload', (event) => {
+        videosPort.disconnect();
+    });
+
+    function update(message) {
         function prettyTime(time) {
             var minutes = Math.floor(time / 60).toString();
             var seconds = Math.floor(time % 60).toString();
@@ -39,17 +39,18 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             return minutes + ":" + seconds;
         }
 
-        // enable/disable undo/redo buttons
-        undoButton.disabled = !stateHistory.canUndo(newVideoHistory);
-        redoButton.disabled = !stateHistory.canRedo(newVideoHistory);
+        let { videos, canUndo, canRedo } = message;
 
-        let videoStorage = stateHistory.current(newVideoHistory);
-        let videoSeq = videos.getAll(videoStorage);
+        // enable/disable undo/redo buttons
+        undoButton.disabled = !canUndo;
+        redoButton.disabled = !canRedo;
+
+        let videoArray = Object.values(videos);
 
         // put newest video on top
-        videoSeq = videoSeq.sort(function (video1, video2) {
-            return video2.get('lastModified') -
-                video1.get('lastModified');
+        videoArray.sort(function (video1, video2) {
+            return video2.lastModified -
+                video1.lastModified;
         });
 
         // empty video list
@@ -59,10 +60,10 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
         }
 
         // populate video list
-        videoSeq.forEach(function (video) {
+        videoArray.forEach(function (video) {
             var videoElement = document.createElement('li');
             videoElement.className = 'video';
-            videoElement.id = video.get('vid');
+            videoElement.id = video.vid;
             videoList.appendChild(videoElement);
 
             var videoFloatContainer = document.createElement('div');
@@ -76,9 +77,9 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             videoInfoBox.className = 'videoInfoBox';
             videoInfoBox.innerHTML = '<span class="videoTitle"></span>' +
                 '<span class="videoTime"></span>';
-            videoInfoBox.firstChild.textContent = video.get('title');
+            videoInfoBox.firstChild.textContent = video.title;
             videoInfoBox.lastChild.textContent =
-                prettyTime(video.get('time'));
+                prettyTime(video.time);
             videoLink.appendChild(videoInfoBox);
 
             videoFloatContainer.appendChild(videoLink);
@@ -88,38 +89,25 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             removeButton.textContent = 'Remove';
             removeButton.addEventListener('click', (event) => {
                 removeButton.disabled = true;
-                videoHistoryAtom.swap(bg.removeVideo, video.get('vid'));
+                videosPort.postMessage(['removeVideo', video.vid]);
             });
             videoFloatContainer.appendChild(removeButton);
         });
     }
 
-    let watchKeyPromise = browser.tabs.getCurrent()
-        .then(tab => 'videoList.update_tab' + tab.id);
+    videosPort.onMessage.addListener(update);
 
-    Promise.all([bg.atomPromise, watchKeyPromise])
-        .then(([{videoHistoryAtom}, watchKey]) => {
-            videoHistoryAtom.addWatch(watchKey, update);
-            window.addEventListener('unload', (event) => {
-                videoHistoryAtom.removeWatch(watchKey);
-                console.log('Removed watch for key "' + watchKey + '"');
-            });
-            update(watchKey, videoHistoryAtom, null,
-                   videoHistoryAtom.deref());
-
-            undoButton.addEventListener('click', (event) => {
-                videoHistoryAtom.swap(stateHistory.undo);
-            });
-            redoButton.addEventListener('click', (event) => {
-                videoHistoryAtom.swap(stateHistory.redo);
-            });
-
-            const preferencesButton = document.getElementById(
-                'preferencesButton');
-            preferencesButton.addEventListener('click', (event) => {
-                browser.tabs.create({
-                    url: '/preferences/preferences.html'
-                });
-            });
+    preferencesButton.addEventListener('click', (event) => {
+        browser.tabs.create({
+            url: '/preferences/preferences.html'
+        });
     });
-})();
+
+    undoButton.addEventListener('click', (event) => {
+        videosPort.postMessage(['undo']);
+    });
+
+    redoButton.addEventListener('click', (event) => {
+        videosPort.postMessage(['redo']);
+    });
+})(youtube);

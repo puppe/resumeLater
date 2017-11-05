@@ -22,7 +22,7 @@
 // Taken with some adjustments from
 // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Converting_Match_Patterns_to_Regular_Expressions
 
-var background = (function (Immutable, atom, videos, youtube, stateHistory) {
+(function (Immutable, atom, videos, youtube, stateHistory) {
     'use strict';
 
     function matchPatternToRegExp(pattern) {
@@ -93,8 +93,9 @@ var background = (function (Immutable, atom, videos, youtube, stateHistory) {
     function addVideo(videoHistory, video, oneVideoPerPlaylist) {
         let videoStorage = stateHistory.current(videoHistory);
         return stateHistory.push(videoHistory,
-                                 videos.add(videoStorage, video,
-                                           oneVideoPerPlaylist));
+                                 videos.add(videoStorage,
+                                            Immutable.fromJS(video),
+                                            oneVideoPerPlaylist));
     }
 
     function removeVideo(videoHistory, vid) {
@@ -181,13 +182,75 @@ var background = (function (Immutable, atom, videos, youtube, stateHistory) {
 
     atomPromise.then(onAtomPromise);
 
+    browser.runtime.onConnect.addListener(port => {
+        function sendPrefs(key, prefsAtom, oldPrefs, newPrefs) {
+            port.postMessage(newPrefs.toJS());
+        }
+
+        function sendVideos(key, videoHistoryAtom, oldVideoHistory,
+                            newVideoHistory) {
+            port.postMessage({
+                videos: stateHistory.current(newVideoHistory).
+                    get('videos').toJS(),
+                canUndo: stateHistory.canUndo(newVideoHistory),
+                canRedo: stateHistory.canRedo(newVideoHistory),
+            });
+        }
+
+        if (port.name === 'prefs') {
+            const watchKey = 'background.sendPrefs_tab' +
+                  port.sender.tab.id;
+
+            prefsAtomPromise.then(prefsAtom => {
+                sendPrefs(watchKey, prefsAtom, null, prefsAtom.deref());
+                prefsAtom.addWatch(watchKey, sendPrefs);
+
+                port.onDisconnect.addListener(port => {
+                    prefsAtom.removeWatch(watchKey);
+                });
+
+                port.onMessage.addListener(newPrefs => {
+                    prefsAtom.swap(oldPrefs =>
+                                   oldPrefs.merge(newPrefs));
+                });
+            });
+        } else if (port.name === 'videos') {
+            const watchKey = 'background.sendVideos_tab' +
+                  port.sender.tab.id;
+
+            videoHistoryAtomPromise.then(videoHistoryAtom => {
+                sendVideos(watchKey, videoHistoryAtom, null,
+                           videoHistoryAtom.deref());
+                videoHistoryAtom.addWatch(watchKey, sendVideos);
+
+                port.onDisconnect.addListener(port => {
+                    videoHistoryAtom.removeWatch(watchKey);
+                });
+
+                port.onMessage.addListener(commandAndArgs => {
+                    let command, args;
+                    if (commandAndArgs instanceof Array) {
+                        [command, ...args] = commandAndArgs;
+                    } else {
+                        command = commandAndArgs;
+                        args = [];
+                    }
+
+                    switch (command) {
+                    case 'undo':
+                    case 'redo':
+                        videoHistoryAtom.swap(stateHistory[command]);
+                        break;
+                    case 'removeVideo':
+                        videoHistoryAtom.swap(removeVideo, args[0]);
+                        break;
+                    }
+                });
+            });
+        }
+    });
+
     browser.browserAction.onClicked.addListener(tab => {
         browser.tabs.create({ url: '/videolist/videolist.html' });
     });
-
-    return {
-        removeVideo: removeVideo,
-        atomPromise: atomPromise,
-    };
-
 })(Immutable, atom, videos, youtube, stateHistory);

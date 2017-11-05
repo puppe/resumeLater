@@ -19,37 +19,22 @@
 
 (function () {
     'use strict';
-    const bg = browser.extension.getBackgroundPage().background;
-
     const oneVideoPerPlaylistCheckbox = document
           .getElementById('oneVideoPerPlaylistCheckbox');
 
-    function update(key, prefsAtom, oldPrefs, newPrefs) {
-        oneVideoPerPlaylistCheckbox.checked = newPrefs.get(
-            'oneVideoPerPlaylist'
-        );
+    function update(prefs) {
+        oneVideoPerPlaylistCheckbox.checked = prefs.oneVideoPerPlaylist;
     }
 
-    let watchKeyPromise = browser.tabs.getCurrent()
-        .then(tab => 'preferences.update_tab' + tab.id);
+    let prefsPort = browser.runtime.connect({ name: 'prefs' });
+    prefsPort.onMessage.addListener(update);
+    window.addEventListener('unload', (event) => {
+        prefsPort.disconnect();
+    });
 
-    Promise.all([bg.atomPromise, watchKeyPromise])
-        .then(([{prefsAtom}, watchKey]) => {
-            prefsAtom.addWatch(watchKey, update);
-            window.addEventListener('unload', (event) => {
-                prefsAtom.removeWatch(watchKey);
-                console.log('Removed watch for key "' + watchKey + '"');
-            });
-            update(watchKey, prefsAtom, null, prefsAtom.deref());
-
-            oneVideoPerPlaylistCheckbox.addEventListener(
-                'change',
-                (event) => {
-                    prefsAtom.swap((prefs) => {
-                        return prefs
-                            .set('oneVideoPerPlaylist',
-                                 oneVideoPerPlaylistCheckbox.checked);
-                    });
-                });
+    oneVideoPerPlaylistCheckbox.addEventListener('change', (event) => {
+        prefsPort.postMessage({
+            oneVideoPerPlaylist: oneVideoPerPlaylistCheckbox.checked,
         });
+    });
 })();
