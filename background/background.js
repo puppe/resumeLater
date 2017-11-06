@@ -228,14 +228,7 @@
                 });
 
                 port.onMessage.addListener(commandAndArgs => {
-                    let command, args;
-                    if (commandAndArgs instanceof Array) {
-                        [command, ...args] = commandAndArgs;
-                    } else {
-                        command = commandAndArgs;
-                        args = [];
-                    }
-
+                    let [command, ...args] = commandAndArgs;
                     switch (command) {
                     case 'undo':
                     case 'redo':
