@@ -31,8 +31,10 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
     redoButton.textContent = _('redoButton_text');
     preferencesButton.textContent = _('preferencesButton_text');
 
+    console.debug('Connect to videosPort');
     let videosPort = browser.runtime.connect({ name: 'videos' });
     window.addEventListener('unload', (event) => {
+        console.debug('Disconnect from videosPort');
         videosPort.disconnect();
     });
 
