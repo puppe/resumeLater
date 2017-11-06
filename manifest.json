@@ -2,9 +2,10 @@
     "manifest_version": 2,
     "name": "resumelater",
     "version": "2.0.0",
-    "description": "Bookmark Youtube videos, saving the current position. Resume playback later.",
+    "description": "__MSG_extensionDescription__",
     "author": "Martin Puppe",
     "homepage_url": "https://github.com/puppe/resumeLater",
+    "default_locale": "en",
     "icons": {
         "48": "icons/resumelater-48.png",
         "64": "icons/resumelater-64.png",
@@ -27,7 +28,7 @@
         "page": "/background/background.html"
     },
     "browser_action": {
-        "default_title": "Open list of videos",
+        "default_title": "__MSG_browser_action_title__",
         "default_icon": {
             "16": "icons/resumelater-16.png",
             "32": "icons/resumelater-32.png",
@@ -37,7 +38,7 @@
         }
     },
     "page_action": {
-        "default_title": "Pause video and save it for later",
+        "default_title": "__MSG_page_action_title__",
         "default_icon": {
             "19": "icons/resumelater-19.png",
             "38": "icons/resumelater-38.png"

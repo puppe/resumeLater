@@ -1,0 +1,49 @@
+{
+    "extensionDescription": {
+        "message": "Bookmark Youtube videos, saving the current position. Resume playback later.",
+        "description": "Description of the extension."
+    },
+
+    "browser_action_title": {
+        "message": "Open list of videos"
+    },
+    "page_action_title": {
+        "message": "Pause video and save it for later"
+    },
+
+    "notification_addedVideo_title": {
+        "message": "Added video"
+    },
+    "notification_addedVideo_message": {
+        "message": "The video on this page has been added to your list of videos."
+    },
+    "notification_noVideo_title": {
+        "message": "Found no video"
+    },
+    "notification_noVideo_message": {
+        "message": "resumeLater could find no video on this page."
+    },
+
+    "videoListPage_title": {
+        "message": "resumeLater – List of Videos"
+    },
+    "undoButton_text": {
+        "message": "Undo"
+    },
+    "redoButton_text": {
+        "message": "Redo"
+    },
+    "preferencesButton_text": {
+        "message": "Preferences"
+    },
+    "removeButton_text": {
+        "message": "Remove"
+    },
+
+    "preferencesPage_title": {
+        "message": "resumeLater – Preferences"
+    },
+    "oneVideoPerPlaylistLabel_text": {
+        "message": "Keep only one video per playlist"
+    }
+}

@@ -19,10 +19,17 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 
 (function (youtube) {
     'use strict';
+    const _ = browser.i18n.getMessage;
+
     const undoButton = document.getElementById('undoButton');
     const redoButton = document.getElementById('redoButton');
     const preferencesButton = document.getElementById(
         'preferencesButton');
+
+    document.title = _('videoListPage_title');
+    undoButton.textContent = _('undoButton_text');
+    redoButton.textContent = _('redoButton_text');
+    preferencesButton.textContent = _('preferencesButton_text');
 
     let videosPort = browser.runtime.connect({ name: 'videos' });
     window.addEventListener('unload', (event) => {
@@ -86,7 +93,7 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 
             var removeButton = document.createElement('button');
             removeButton.type = 'button';
-            removeButton.textContent = 'Remove';
+            removeButton.textContent = _('removeButton_text');
             removeButton.addEventListener('click', (event) => {
                 removeButton.disabled = true;
                 videosPort.postMessage(['removeVideo', video.vid]);

@@ -19,8 +19,16 @@
 
 (function () {
     'use strict';
+    const _ = browser.i18n.getMessage;
+
     const oneVideoPerPlaylistCheckbox = document
           .getElementById('oneVideoPerPlaylistCheckbox');
+    const oneVideoPerPlaylistLabel = document
+          .getElementById('oneVideoPerPlaylistLabel');
+
+    document.title = _('preferencesPage_title');
+    oneVideoPerPlaylistLabel.textContent =
+        _('oneVideoPerPlaylistLabel_text');
 
     function update(prefs) {
         oneVideoPerPlaylistCheckbox.checked = prefs.oneVideoPerPlaylist;

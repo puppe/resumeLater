@@ -1,0 +1,49 @@
+{
+    "extensionDescription": {
+        "message": "Aktuelle Position in Youtube-Videos abspeichern, später weiterschauen.",
+        "description": "Beschreibung der Erweiterung."
+    },
+
+    "browser_action_title": {
+        "message": "Videoliste öffnen"
+    },
+    "page_action_title": {
+        "message": "Video pausieren und für später speichern"
+    },
+
+    "notification_addedVideo_title": {
+        "message": "Video hinzugefügt"
+    },
+    "notification_addedVideo_message": {
+        "message": "Das Video auf dieser Seite wurde zu Ihrer Videoliste hinzugefügt."
+    },
+    "notification_noVideo_title": {
+        "message": "Kein Video gefunden"
+    },
+    "notification_noVideo_message": {
+        "message": "resumeLater konnte auf dieser Seite kein Video finden."
+    },
+
+    "videoListPage_title": {
+        "message": "resumeLater – Videoliste"
+    },
+    "undoButton_text": {
+        "message": "Rückgangig"
+    },
+    "redoButton_text": {
+        "message": "Wiederholen"
+    },
+    "preferencesButton_text": {
+        "message": "Einstellungen"
+    },
+    "removeButton_text": {
+        "message": "Löschen"
+    },
+
+    "preferencesPage_title": {
+        "message": "resumeLater – Einstellungen"
+    },
+    "oneVideoPerPlaylistLabel_text": {
+        "message": "Pro Playlist nur ein Video behalten"
+    }
+}

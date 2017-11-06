@@ -25,6 +25,8 @@
 (function (Immutable, atom, videos, youtube, stateHistory) {
     'use strict';
 
+    const _ = browser.i18n.getMessage;
+
     function matchPatternToRegExp(pattern) {
         const matchPattern = (/^(?:(\*|http|https|file|ftp|app):\/\/([^\/]+|)\/?(.*))$/i);
         const match = matchPattern.exec(pattern);
@@ -134,17 +136,15 @@
                                           ));
                     browser.notifications.create({
                         type: 'basic',
-                        title: 'Added video',
-                        message: 'The video on this page has been ' +
-                            'added to your list of videos.',
+                        title: _('notification_addedVideo_title'),
+                        message: _('notification_addedVideo_message'),
                     });
                 },
                 reason => {
                     browser.notifications.create({
                         type: 'basic',
-                        title: 'Found no video',
-                        message: 'resumeLater could find no video on ' +
-                            'this page.',
+                        title: _('notification_noVideo_title'),
+                        message: _('notification_noVideo_message'),
                     });
                 }
             );
