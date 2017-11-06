@@ -23,7 +23,6 @@
             "strict_min_version": "48.0"
         }
     },
-    "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net; object-src 'self'",
     "background": {
         "page": "/background/background.html"
     },

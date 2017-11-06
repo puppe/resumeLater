@@ -18,6 +18,8 @@ resumeLater uses [elementary Icons](https://launchpad.net/elementaryicons).
 
 ## Copyright and License
 
+### resumeLater
+
 Copyright © 2012-2017 Martin Puppe
 
 resumeLater is free software: you can redistribute it and/or modify
@@ -32,3 +34,10 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
+
+### Third-party libraries
+
+I do not claim copyright for third-party libraries in the sub-directory
+`3rd-party-libs`. These are distributed under their own respective
+licenses, which are included in this repository alongside the respective
+library.
