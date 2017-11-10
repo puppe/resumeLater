@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "resumelater",
-    "version": "2.0.0alpha1",
+    "version": "2.0.0",
     "description": "__MSG_extensionDescription__",
     "author": "Martin Puppe",
     "homepage_url": "https://github.com/puppe/resumeLater",
