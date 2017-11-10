@@ -25,7 +25,13 @@
     },
 
     "videoListPage_title": {
-        "message": "resumeLater – Videoliste"
+        "message": "resumeLater – Ihre Videos"
+    },
+    "videoListPage_heading": {
+        "message": "Ihre Videos"
+    },
+    "preferencesLink_text": {
+        "message": "Einstellungen"
     },
     "undoButton_text": {
         "message": "Rückgangig"
@@ -33,15 +39,18 @@
     "redoButton_text": {
         "message": "Wiederholen"
     },
-    "preferencesButton_text": {
-        "message": "Einstellungen"
-    },
     "removeButton_text": {
         "message": "Löschen"
     },
 
     "preferencesPage_title": {
         "message": "resumeLater – Einstellungen"
+    },
+    "preferencesPage_heading": {
+        "message": "Einstellungen"
+    },
+    "videoListLink_text": {
+        "message": "Ihre Videos"
     },
     "oneVideoPerPlaylistLabel_text": {
         "message": "Pro Playlist nur ein Video behalten"

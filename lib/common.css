@@ -1,0 +1,91 @@
+/*
+Copyright © 2012-2017 Martin Puppe
+
+This file is part of resumeLater.
+
+resumeLater is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+resumeLater is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+Note about colors for the future:
+
+I have read this article:
+https://www.websitebuilderexpert.com/how-to-choose-color-for-your-website/
+And I picked #ABC443 as the dominant color. That is the color from the
+resumeLater icon. Then I used
+https://color.adobe.com/de/create/color-wheel/ to get additional colors
+for accentuation. (Although, currently I only use a darker variant of
+the dominant color for links.)
+
+For background and text, mostly neutral colors (R=G=B, gray) are used.
+*/
+
+body {
+    background-color: #fafafa;
+    color: #555;
+    max-width: 800px;
+    margin: 2em auto;
+    position: relative;
+    font-size: 16px;
+    font-family: sans-serif;
+}
+
+#resumeLaterIcon {
+    vertical-align: -0.1em;
+    height: 1em;
+}
+
+nav li {
+    display: inline;
+    list-style-type: none;
+}
+
+nav ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+button {
+    font-size: inherit;
+    border-width: 0.1em;
+    border-style: solid;
+    border-color: inherit;
+    padding: 0.15em;
+    border-radius: 0.3em;
+    margin: 0.3em;
+}
+
+button.warning {
+    background-color: #FF7869;
+}
+
+button.warning:hover {
+    background-color: #C75E52;
+}
+
+button:hover {
+    background-color: #d0d0d0;
+}
+
+button:disabled, button:disabled:hover {
+    background-color: inherit;
+}
+
+hr {
+    border-color: #050505;
+}
+
+a {
+    color: #66771D;
+}

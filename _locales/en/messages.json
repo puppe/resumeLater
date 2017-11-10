@@ -5,7 +5,7 @@
     },
 
     "browser_action_title": {
-        "message": "Open list of videos"
+        "message": "Display list of your videos"
     },
     "page_action_title": {
         "message": "Pause video and save it for later"
@@ -25,7 +25,13 @@
     },
 
     "videoListPage_title": {
-        "message": "resumeLater – List of Videos"
+        "message": "resumeLater – Your Videos"
+    },
+    "videoListPage_heading": {
+        "message": "Your Videos"
+    },
+    "preferencesLink_text": {
+        "message": "Preferences"
     },
     "undoButton_text": {
         "message": "Undo"
@@ -33,15 +39,18 @@
     "redoButton_text": {
         "message": "Redo"
     },
-    "preferencesButton_text": {
-        "message": "Preferences"
-    },
     "removeButton_text": {
         "message": "Remove"
     },
 
     "preferencesPage_title": {
         "message": "resumeLater – Preferences"
+    },
+    "preferencesPage_heading": {
+        "message": "Preferences"
+    },
+    "videoListLink_text": {
+        "message": "Your videos"
     },
     "oneVideoPerPlaylistLabel_text": {
         "message": "Keep only one video per playlist"

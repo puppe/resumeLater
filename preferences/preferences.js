@@ -21,12 +21,16 @@
     'use strict';
     const _ = browser.i18n.getMessage;
 
+    const heading = document.getElementById('heading');
+    const videoListLink = document.getElementById('videoListLink');
     const oneVideoPerPlaylistCheckbox = document
           .getElementById('oneVideoPerPlaylistCheckbox');
     const oneVideoPerPlaylistLabel = document
           .getElementById('oneVideoPerPlaylistLabel');
 
     document.title = _('preferencesPage_title');
+    heading.textContent = _('preferencesPage_heading');
+    videoListLink.textContent = _('videoListLink_text');
     oneVideoPerPlaylistLabel.textContent =
         _('oneVideoPerPlaylistLabel_text');
 

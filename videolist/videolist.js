@@ -21,15 +21,40 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
     'use strict';
     const _ = browser.i18n.getMessage;
 
+    const heading = document.getElementById('heading');
+    const preferencesLink = document.getElementById('preferencesLink');
     const undoButton = document.getElementById('undoButton');
     const redoButton = document.getElementById('redoButton');
-    const preferencesButton = document.getElementById(
-        'preferencesButton');
+
+    const acceptLanguagesElement = document.getElementById('acceptLanguages');
+    const uiLanguageElement = document.getElementById('uiLanguage');
+
+    function findInstructionsElement(language) {
+        let id = 'instructions_' + language;
+        let instructionsElement = document.getElementById(id);
+        if (instructionsElement) return instructionsElement;
+
+        while (true) {
+            let subTagIndex = language.lastIndexOf('-');
+            if (subTagIndex === -1) break;
+            language = language.slice(0, subTagIndex);
+            id = 'instructions_' + language;
+            instructionsElement = document.getElementById(id);
+            if (instructionsElement) return instructionsElement;
+        }
+
+        id = 'instructions_en';
+        return document.getElementById(id);
+    }
+
+    const uiLanguage = browser.i18n.getUILanguage();
+    const instructionsElement = findInstructionsElement(uiLanguage);
 
     document.title = _('videoListPage_title');
+    heading.textContent = _('videoListPage_heading');
+    preferencesLink.textContent = _('preferencesLink_text');
     undoButton.textContent = _('undoButton_text');
     redoButton.textContent = _('redoButton_text');
-    preferencesButton.textContent = _('preferencesButton_text');
 
     console.debug('Connect to videosPort');
     let videosPort = browser.runtime.connect({ name: 'videos' });
@@ -68,6 +93,12 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             videoList.removeChild(videoList.lastChild);
         }
 
+        if (videoArray.length > 0) {
+            instructionsElement.classList.add('hidden');
+        } else {
+            instructionsElement.classList.remove('hidden');
+        }
+
         // populate video list
         videoArray.forEach(function (video) {
             var videoElement = document.createElement('li');
@@ -76,7 +107,7 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             videoList.appendChild(videoElement);
 
             var videoFloatContainer = document.createElement('div');
-            videoFloatContainer.className = 'videoFloatContainer clearfix';
+            videoFloatContainer.className = 'videoFloatContainer';
             videoElement.appendChild(videoFloatContainer);
 
             var videoLink = document.createElement('a');
@@ -85,6 +116,7 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             var videoInfoBox = document.createElement('div');
             videoInfoBox.className = 'videoInfoBox';
             videoInfoBox.innerHTML = '<span class="videoTitle"></span>' +
+                '<span> </span>' +
                 '<span class="videoTime"></span>';
             videoInfoBox.firstChild.textContent = video.title;
             videoInfoBox.lastChild.textContent =
@@ -94,8 +126,8 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
             videoFloatContainer.appendChild(videoLink);
 
             var removeButton = document.createElement('button');
-            removeButton.type = 'button';
             removeButton.textContent = _('removeButton_text');
+            removeButton.className = 'warning';
             removeButton.addEventListener('click', (event) => {
                 removeButton.disabled = true;
                 videosPort.postMessage(['removeVideo', video.vid]);
@@ -105,12 +137,6 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
     }
 
     videosPort.onMessage.addListener(update);
-
-    preferencesButton.addEventListener('click', (event) => {
-        browser.tabs.create({
-            url: '/preferences/preferences.html'
-        });
-    });
 
     undoButton.addEventListener('click', (event) => {
         videosPort.postMessage(['undo']);

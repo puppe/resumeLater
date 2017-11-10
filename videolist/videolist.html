@@ -23,6 +23,8 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
   <head>
     <meta charset="UTF-8">
 
+    <link href="/lib/common.css" rel="stylesheet" type="text/css"
+          media="all">
     <link href="videolist.css" rel="stylesheet" type="text/css" media="all">
 
     <script type="text/javascript" src="/3rd-party-libs/immutable/immutable.min.js"></script>
@@ -32,15 +34,48 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
   </head>
 
   <body>
-    <div>
+    <h1>
+      <img id="resumeLaterIcon" src="/icons/resumelater.svg" alt="">
+      <span id="heading"></span>
+    </h1>
+    <nav>
+      <ul>
+        <li>
+          <a id="preferencesLink"
+             href="/preferences/preferences.html">
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <hr>
+
+    <div id="buttons">
       <button id="undoButton"></button>
       <button id="redoButton"></button>
-      <button id="preferencesButton"></button>
     </div>
-    <div class="wrapper">
-      <ul id="videoList">
 
-      </ul>
+    <ul id="videoList"> </ul>
+
+    <div id="instructions_de" class="hidden">
+      <p>
+        Noch keine Videos gespeichert? Jetzt <a
+        href="https://www.youtube.com">Youtube</a> besuchen und ein
+        Video anschauen. Wenn Sie eine Pause brauchen, einfach auf das
+        Symbol in der Adressleiste klicken.
+      </p>
+      <img src="instructions.png" class="instructionsImage"
+           width="529" height="37">
+    </div>
+
+    <div id="instructions_en" class="hidden">
+      <p>
+        No videos yet? Visit <a href="https://www.youtube.com">
+        Youtube</a> and watch a video. When you need a break, simply
+        click the resumeLater symbol in the address bar.
+      </p>
+      <img src="instructions.png" class="instructionsImage"
+           width="529" height="37">
     </div>
   </body>
 
