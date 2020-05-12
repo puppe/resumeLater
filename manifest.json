@@ -17,10 +17,10 @@
         "storage",
         "tabs"
     ],
-    "applications": {
+    "browser_specific_settings": {
         "gecko": {
             "id": "resumeLater@mpuppe.de",
-            "strict_min_version": "48.0"
+            "strict_min_version": "55.0"
         }
     },
     "background": {
