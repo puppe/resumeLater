@@ -1,5 +1,5 @@
 /*
-Copyright © 2012-2017 Martin Puppe
+Copyright © 2012-2020 Martin Puppe
 
 This file is part of resumeLater.
 
@@ -17,6 +17,9 @@ You should have received a copy of the GNU General Public License
 along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/* jshint browser:true, devel:true */
+/* globals browser, youtube */
+
 (function (youtube) {
     'use strict';
     const _ = browser.i18n.getMessage;
@@ -26,21 +29,24 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
     const undoButton = document.getElementById('undoButton');
     const redoButton = document.getElementById('redoButton');
 
-    const acceptLanguagesElement = document.getElementById('acceptLanguages');
-    const uiLanguageElement = document.getElementById('uiLanguage');
-
     function findInstructionsElement(language) {
         let id = 'instructions_' + language;
         let instructionsElement = document.getElementById(id);
-        if (instructionsElement) return instructionsElement;
+        if (instructionsElement) {
+            return instructionsElement;
+        }
 
         while (true) {
             let subTagIndex = language.lastIndexOf('-');
-            if (subTagIndex === -1) break;
+            if (subTagIndex === -1) {
+                break;
+            }
             language = language.slice(0, subTagIndex);
             id = 'instructions_' + language;
             instructionsElement = document.getElementById(id);
-            if (instructionsElement) return instructionsElement;
+            if (instructionsElement) {
+                return instructionsElement;
+            }
         }
 
         id = 'instructions_en';
@@ -65,8 +71,8 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 
     function update(message) {
         function prettyTime(time) {
-            var minutes = Math.floor(time / 60).toString();
-            var seconds = Math.floor(time % 60).toString();
+            const minutes = Math.floor(time / 60).toString();
+            let seconds = Math.floor(time % 60).toString();
             if (seconds.length < 2) {
                 seconds = "0" + seconds;
             }
@@ -101,19 +107,19 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 
         // populate video list
         videoArray.forEach(function (video) {
-            var videoElement = document.createElement('li');
+            const videoElement = document.createElement('li');
             videoElement.className = 'video';
             videoElement.id = video.vid;
             videoList.appendChild(videoElement);
 
-            var videoFloatContainer = document.createElement('div');
+            const videoFloatContainer = document.createElement('div');
             videoFloatContainer.className = 'videoFloatContainer';
             videoElement.appendChild(videoFloatContainer);
 
-            var videoLink = document.createElement('a');
+            const videoLink = document.createElement('a');
             videoLink.href = youtube.getResumeUrl(video);
 
-            var videoInfoBox = document.createElement('div');
+            const videoInfoBox = document.createElement('div');
             videoInfoBox.className = 'videoInfoBox';
             videoInfoBox.innerHTML = '<span class="videoTitle"></span>' +
                 '<span> </span>' +
@@ -125,7 +131,7 @@ along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 
             videoFloatContainer.appendChild(videoLink);
 
-            var removeButton = document.createElement('button');
+            const removeButton = document.createElement('button');
             removeButton.textContent = _('removeButton_text');
             removeButton.className = 'warning';
             removeButton.addEventListener('click', (event) => {

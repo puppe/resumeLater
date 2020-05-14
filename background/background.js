@@ -1,5 +1,5 @@
 /*
-  Copyright © 2012-2017 Martin Puppe
+  Copyright © 2012-2020 Martin Puppe
 
   This file is part of resumeLater.
 
@@ -17,7 +17,7 @@
   along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* globals browser, console, escape */
+/* globals atom, browser, Immutable, escape, videos, stateHistory, youtube */
 
 // Taken with some adjustments from
 // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Converting_Match_Patterns_to_Regular_Expressions
@@ -28,6 +28,11 @@
     const _ = browser.i18n.getMessage;
 
     function matchPatternToRegExp(pattern) {
+        // Disabling JSHint warning because this code already seems to work
+        // correctly. I do not want to change it now while I do not have a
+        // test suite yet.
+        // jshint -W126
+        // jshint -W147
         const matchPattern = (/^(?:(\*|http|https|file|ftp|app):\/\/([^\/]+|)\/?(.*))$/i);
         const match = matchPattern.exec(pattern);
         if (pattern === '<all_urls>') {
@@ -43,10 +48,12 @@
                 (scheme === '*' ? 'https?' : escape(scheme)) + ':\\/\\/' +
                 (host === '*' ? "[^\\/]*" :
                  escape(host).replace(/^\*\./g, '(?:[^\\/]+)?')) +
-                (path ? (path == '*' ? '(?:\\/.*)?' :
+                (path ? (path === '*' ? '(?:\\/.*)?' :
                          ('\\/' + escape(path).replace(/\*/g, '.*')))
                  : '\\/?') + ')$'
         );
+        // jshint +W126
+        // jshint +W147
     }
 
     const YOUTUBE_PATTERN = '*://*.youtube.com/*';

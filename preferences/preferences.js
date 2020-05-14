@@ -1,5 +1,5 @@
 /*
-  Copyright © 2012-2017 Martin Puppe
+  Copyright © 2012-2020 Martin Puppe
 
   This file is part of resumeLater.
 
@@ -16,6 +16,9 @@
   You should have received a copy of the GNU General Public License
   along with resumeLater. If not, see <http://www.gnu.org/licenses/>.
 */
+
+/* jshint browser:true */
+/* globals browser */
 
 (function () {
     'use strict';

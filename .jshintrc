@@ -1,4 +1,23 @@
 {
+    "bitwise": true,
+    "curly": true,
+    "eqeqeq": true,
     "esversion": 6,
-    "strict": true
+    "forin": true,
+    "freeze": true,
+    "futurehostile": true,
+    "latedef": true,
+    "leanswitch": true,
+    "noarg": true,
+    "nonbsp": true,
+    "nonew": true,
+    "noreturnawait": true,
+    "regexpu": true,
+    "singleGroups": true,
+    "strict": true,
+    "undef": true,
+    "unused": "vars",
+    "varstmt": true,
+
+    "eqnull": true
 }
