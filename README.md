@@ -8,6 +8,52 @@ Download: [add-ons.mozilla.org](https://addons.mozilla.org/en-US/firefox/addon/r
 
  * Youtube
 
+## Development
+
+Tools recommended for development:
+
+* [web-ext](https://github.com/mozilla/web-ext)
+* [JSHint](https://jshint.com/install/)
+* [Python test runner for Jasmine
+  tests](https://jasmine.github.io/setup/python.html)
+
+A shell.nix file is provided. If you are on NixOS or use Nix on any other
+distribution / operating system, you can simply run `nix-shell` to get a shell
+with the necessary dependencies. For even more convenience, you can use
+[direnv](https://github.com/direnv/direnv/wiki/Nix).
+
+If you do not use Nix, you have to install these tools via npm, pip or any
+other package manager that provides them.
+
+### Running the extension, building the extension, etc.
+
+See [this introduction to
+web-ext](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/)
+from Mozilla.
+
+### Running tests
+
+```
+make test
+```
+
+That starts a web server at http://localhost:8888 and should open that URL in
+your default browser.
+
+### Linting
+
+web-ext can do some linting specifically for Firefox web extensions.
+
+```
+web-ext lint
+```
+
+JSHint is used to enforce further syntactic rules.
+
+```
+jshint .
+```
+
 ## Icons
 
 resumeLater uses [elementary Icons](https://launchpad.net/elementaryicons).
