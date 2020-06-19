@@ -15,6 +15,7 @@ src_files:
   - "3rd-party-libs/**/*.js"
   - "lib/atom.js"
   - "lib/stateHistory.js"
+  - "lib/videos.js"
 
 # stylesheets
 #
